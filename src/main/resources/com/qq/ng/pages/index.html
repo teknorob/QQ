@@ -1,0 +1,62 @@
+<html ng-app="QQApp">
+<head>
+  <!-- Basic Page Needs
+  ---------------------------------------------------------------------------------------------------- -->
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+  
+    <title>QQ</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+  <!-- Mobile Specific Metas
+  ---------------------------------------------------------------------------------------------------- -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- FONT
+  ---------------------------------------------------------------------------------------------------- -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+  <!-- CSS
+  ---------------------------------------------------------------------------------------------------- -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+
+  <!-- Favicon
+  ---------------------------------------------------------------------------------------------------- -->
+  <!--<link rel="icon" type="image/png" href="images/favicon.png"> -->
+    <link rel="stylesheet" href="css/custom.css"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.3/angular-route.min.js"></script>
+    <script src=../app/QQApp.js></script>
+    <script src=../controllers/UserController.js></script>
+    <script src=../services/UserService.js></script>
+    
+</head>
+<body>
+<div class="section header" ng-controller="userController">
+    <div class="container">
+      <div class="row">
+      <div ng-hide="user == null" >
+            Logged in as {{user.userName}} <a href="/logout">Log out?</a>
+            <p>Role: {{user.roleCode}}</p>
+      </div>
+      <div ng-show="user == null" >
+            <a href="/login"><img src="media/signInThroughSteam.png" alt="log in with steam" /></a>
+      </div>
+        <div class="twelve columns">
+          <h1 class="section-heading">Rocket League Competition</h1>
+          <div id="nav" class="fourteen columns">
+		      <ul>
+		          <li><a href="#users">Users</a></li>
+		          <li><a href="#teams">Teams</a></li>
+		          <li><a href="#competitions">Competitions</a></li>
+	          </ul>
+		  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" ng-view=""/>
+</body>
+</html>
