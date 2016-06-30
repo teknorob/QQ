@@ -1,9 +1,11 @@
-#Rocket-Comp
-##An alternative way to waste your lunchtimes
+#QQ
+##Cry me a shower
 
-This is the home of the code for a Rocket League Competition. It is forked and heavily mutated from
-Jedro's [Football Fours](http://git.thatscloud.org/?p=footballfours.git "That's cloud!") Soccer Competition Software
+This is a Queueing System for simple things like a shower or kitchen fairy duties and shit.
+Makes shit easier cause of sms' through TWILIO and shit. No more cutting down trees for shit like that.
+No more walking back and forth and shit to check if people are in the shower.
+No more getting shitty with people cutting the queue and shit.
 
-Through a proxy?
+Get this shit through a proxy?
 gradle -PproxyHost=<proxyhostaddress> -PproxyPort=<proxyPort> run
 
