@@ -1,4 +1,4 @@
-RocketCompApp.service('userService', function() {
+QQApp.service('userService', function() {
   var user;
 
   var setUser = function(newUser) {

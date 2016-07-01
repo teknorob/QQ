@@ -25,7 +25,7 @@ public class IndexRoute extends RegistrableRoute
                                                                           throws Exception
     {
         try (final InputStream in = getClass().getClassLoader().getResourceAsStream(
-            "com/rocketcomp/ng/pages/index.html" );
+            "com/qq/ng/pages/index.html" );
                 final OutputStream out = response.raw().getOutputStream())
         {
             IOUtils.copy( in, out );

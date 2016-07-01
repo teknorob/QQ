@@ -1,4 +1,4 @@
- var QQApp = angular.module("QQApp",[
+var QQApp = angular.module("QQApp",[
  'ngRoute'
  ]);
 
@@ -7,7 +7,7 @@
          templateUrl: 'pages/queues.html',
          controller: 'queuesController'
      })
-     .when('/players', {
+     .when('/queues', {
          templateUrl: 'pages/queues.html',
          controller: 'queuesController'
      })

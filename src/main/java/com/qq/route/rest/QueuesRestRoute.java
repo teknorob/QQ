@@ -11,10 +11,10 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.RegistrableRoute;
 import com.qq.facade.UserFacade;
 
-public class UsersRestRoute extends RegistrableRoute
+public class QueuesRestRoute extends RegistrableRoute
 {
 
-    public UsersRestRoute( final ConnectionSource connectionSource ) throws SQLException
+    public QueuesRestRoute( final ConnectionSource connectionSource ) throws SQLException
     {
         super( connectionSource );
     }
@@ -22,22 +22,22 @@ public class UsersRestRoute extends RegistrableRoute
     @Override
     public void register()
     {
-        get( "/users", "application/json", ( request, response ) -> {
+        get( "/queues", "application/json", ( request, response ) -> {
             Map<String, Object> page = getNewPageModel( request );
             return page;
         }, getJsonTransformer() );
 
-        get( "/users/:userId", "application/json", ( request, response ) -> {
+        get( "/queues/:queueId", "application/json", ( request, response ) -> {
             Map<String, Object> page = getNewPageModel( request );
             return page;
         }, getJsonTransformer() );
 
-        delete( "/users/:userId", "application/json", ( request, response ) -> {
+        delete( "/queues/:queueId", "application/json", ( request, response ) -> {
             Map<String, Object> page = getNewPageModel( request );
             return page;
         }, getJsonTransformer() );
         
-        put( "/users", "application/json", ( request, response ) -> {
+        put( "/queues", "application/json", ( request, response ) -> {
             return null;
         }, getJsonTransformer() );
     }

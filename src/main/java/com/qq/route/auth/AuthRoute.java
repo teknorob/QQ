@@ -1,110 +1,82 @@
 package com.qq.route.auth;
 
 import static spark.Spark.get;
-import static spark.Spark.halt;
+import static spark.Spark.post;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.util.Arrays;
 
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.gson.GsonFactory;
 import com.j256.ormlite.support.ConnectionSource;
-import com.qq.auth.openid4java.SteamOpenID;
 import com.qq.core.route.RegistrableRoute;
-import com.qq.facade.UserFacade;
-import com.qq.model.User;
 
 public class AuthRoute extends RegistrableRoute
 {
-
-    private final SteamOpenID openid = null;
+    GoogleIdTokenVerifier verifier;
 
     public AuthRoute( final ConnectionSource connectionSource )
     {
         super( connectionSource );
-//        openid = new SteamOpenID();
+        NetHttpTransport transport;
+        if ( System.getProperty( "http.proxyHost" ) != null)
+        {
+            Proxy proxy = new Proxy( Proxy.Type.HTTP,
+                new InetSocketAddress( System.getProperty( "http.proxyHost"),
+                    Integer.parseInt( System.getProperty( "http.proxyPort" ) ) ) );
+            transport = new NetHttpTransport.Builder().setProxy( proxy ).build();
+        }
+        else
+        {
+            transport = new NetHttpTransport();
+        }
+
+        verifier = new GoogleIdTokenVerifier.Builder( transport, new GsonFactory() )
+            .setAudience( Arrays.asList(
+                "793252566542-hsgoksf7aq342gsbpq50lnvilem7gbds.apps.googleusercontent.com" ) )
+            .setIssuer( "accounts.google.com" ).build();
     }
 
-    @Override
     public void register()
     {
-        
-    }
-    
-    public void steamRegister()
-    {
         get( "/auth", ( request, response ) -> {
-            String steamId = openid.verify( request.url(),
-                request.queryMap().toMap() );
-            request.session( true ).attribute( "steamId", steamId );
-            if ( steamId == null )
-            {
-                // User has not successfully logged in, redirect to root.
-                response.redirect( getFullUrl( request, "/" ) );
-            }
-            else
-            {
-                try
-                {
-                    UserFacade userFacade = new UserFacade(
-                        getConnectionSource() );
-                    User user = userFacade.getUserBySteamId( steamId );
-
-                    // If user does not exist then send to the registration
-                    // route
-                    if ( user == null )
-                    {
-                        response.redirect( getFullUrl( request, "/registration" ) );
-                    }
-                    else
-                    {
-                        request.session( true ).attribute( "user", user );
-                        response.redirect( getFullUrl( request, "/" ) );
-                    }
-
-                }
-                catch ( SQLException e )
-                {
-                    throw new RuntimeException( e );
-                }
-            }
             return response.raw();
         } );
 
-        get( "/login", ( request, response ) -> {
-            response.redirect( openid.login( getFullUrl( request, "/auth" ) ) );
-            // We should never return here.
-            halt( 403, "Preventing OID login provider redirect" );
+        post( "/login", ( request, response ) -> {
+            String tokenId = request.queryParams( "idtoken" );
+            
+            GoogleIdToken idToken = verifier.verify( tokenId );
+            if ( idToken != null )
+            {
+                System.out.println( "=User verified=");
+                Payload payload = idToken.getPayload();
+
+                // Print user identifier
+                String userId = payload.getSubject();
+                System.out.println( "User ID: " + userId );
+
+                // Get profile information from payload
+                System.out.println( "Email: " + payload.getEmail() );
+                System.out.println( "Email Verified: " + payload.getEmailVerified() );
+                System.out.println( "Name: " + (String)payload.get( "name" ) );
+                System.out.println( "Picture: " + (String)payload.get( "picture" ) );
+                System.out.println( "Locale: " + (String)payload.get( "locale" ) );
+                System.out.println( "Family Name: " + (String)payload.get( "family_name" ) );
+                System.out.println( "Given Name: " + (String)payload.get( "given_name" ) );
+            }
+            else
+            {
+                System.out.println( "nuffin!" );
+            }
             return response.raw();
         } );
 
         get( "/logout", ( request, response ) -> {
-            request.session( true ).removeAttribute( "steamId" );
-            request.session( true ).removeAttribute( "user" );
-            response.redirect( getFullUrl( request, "/" ) );
-            return response.raw();
-        } );
-
-        get( "/registration", ( request, response ) -> {
-            UserFacade userFacade = new UserFacade( getConnectionSource() );
-            String steamId = request.session().attribute( "steamId" );
-            User user = userFacade.getUserBySteamId( steamId );
-            if ( user == null )
-            {
-                try
-                {
-                    int userId = userFacade.registerNewUserBySteamId( steamId );
-                    user = userFacade
-                        .getUserById( Integer.toString( userId ) );
-                    request.session().attribute( "user", user );
-                }
-                catch ( IOException e )
-                {
-                    response.redirect( getFullUrl( request, "/users" ) );
-                    throw new RuntimeException(
-                        "Could not obtain user information from steam", e );
-                }
-            }
-
-            response.redirect( getFullUrl( request, "/" ) );
             return response.raw();
         } );
     }

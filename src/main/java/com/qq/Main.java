@@ -28,7 +28,7 @@ public class Main
         try
         {
             final URI uri = Main.class.getClassLoader()
-                .getResource( "com/rocketcomp/Main.class" ).toURI();
+                .getResource( "com/qq/Main.class" ).toURI();
             if ( uri.getScheme().equals( "jar" ) )
             {
                 final String uriString = uri.toString();
@@ -49,13 +49,13 @@ public class Main
             throw new RuntimeException( e );
         }
 
-        final String sqlUsername = "rocketcomp";
-        final String filePassword = "rocketcomp";
-        final String sqlPassword = "rocketcomp";
+        final String sqlUsername = "qq";
+        final String filePassword = "qq";
+        final String sqlPassword = "qq";
 
         final String connectionPassword = filePassword + " " + sqlPassword;
         final JdbcConnectionPool connectionPool = JdbcConnectionPool.create(
-            "jdbc:h2:./rocketcomp;CIPHER=AES;mode=mysql", sqlUsername,
+            "jdbc:h2:./qq;CIPHER=AES;mode=mysql", sqlUsername,
             connectionPassword );
 
         // Initialize database if required
@@ -82,7 +82,7 @@ public class Main
         try
         {
             connectionSource = new JdbcConnectionSource(
-                "jdbc:h2:./rocketcomp;CIPHER=AES;mode=mysql", sqlUsername,
+                "jdbc:h2:./qq;CIPHER=AES;mode=mysql", sqlUsername,
                 connectionPassword );
 
         }

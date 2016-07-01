@@ -33,7 +33,7 @@ public class RouteManager
             }
         } );
 
-        Reflections reflections = new Reflections( "com.rocketcomp.route" );
+        Reflections reflections = new Reflections( "com.qq.route" );
         // Register the CRUD Routes
         try
         {

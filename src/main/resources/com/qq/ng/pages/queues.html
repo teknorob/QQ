@@ -1,14 +1,6 @@
 <table>
 <tr>
-    <td><label>Player Id</label></td>
-    <td><label>Player Name</label></td>
-</tr>
-<tr ng-repeat="player in players">
-<td>{{player.playerId}}</td>
-<td>{{player.playerName}}</td>
-<td><div ng-hide="user === null || user.roleCode === 'USER'">
-      <button ng-show="user.roleCode === 'GOD'" ng-click=makePlayerAdmin(player) class="btn btn-small btn-danger">make admin?</button>
-      <button ng-click="deletePlayer(player)" class="btn btn-small btn-danger">delete?</button>
-    </div></td>
+    <td><label>Queue #1</label></td>
+    <td><label>Queue #2</label></td>
 </tr>
 </table>
