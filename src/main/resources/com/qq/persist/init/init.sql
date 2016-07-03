@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS user (
   id_user INT NOT NULL AUTO_INCREMENT,
   nm_user VARCHAR(45) NOT NULL,
   id_google VARCHAR(45) NOT NULL,
+  ur_avatar VARCHAR(1000),
   id_role INT NOT NULL,
   PRIMARY KEY (id_user),
   UNIQUE INDEX nm_steam_UNIQUE (id_google ASC),

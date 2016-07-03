@@ -48,7 +48,7 @@ public class UserFacade extends ModelFacade
         Dao<God, String> myGodDao = DaoManager.createDao( getConnectionSource(),
             God.class );
         Map<String, Object> fieldValues = new HashMap<>();
-        fieldValues.put( "id_steam", user.getSteamId() );
+        fieldValues.put( "id_google", user.getGoogleId() );
 
         List<God> gods = myGodDao.queryForFieldValues( fieldValues );
         if ( gods.size() == 1 )
@@ -61,7 +61,7 @@ public class UserFacade extends ModelFacade
 
     }
 
-    public int createNewUser( String userName, String steamId,
+    public int createNewUser( String userName, String googleId,
                                 String avatarURL ) throws SQLException
     {
         RoleFacade roleFacade = new RoleFacade( getConnectionSource() );
@@ -69,7 +69,7 @@ public class UserFacade extends ModelFacade
 
         User user = new User();
         user.setUserName( userName );
-        user.setSteamId( steamId );
+        user.setGoogleId( googleId );
         user.setRoleId( role.getRoleId() );
         myUserDao.create( user );
 
@@ -82,10 +82,10 @@ public class UserFacade extends ModelFacade
         return myUserDao.queryForId( userId );
     }
 
-    public User getUserBySteamId( String steamId ) throws SQLException
+    public User getUserByGoogleId( String googleId ) throws SQLException
     {
         Map<String, Object> fieldValues = new HashMap<>();
-        fieldValues.put( "id_steam", steamId );
+        fieldValues.put( "id_google", googleId );
         List<User> users = myUserDao.queryForFieldValues( fieldValues );
         if ( users.size() != 1 )
         {
@@ -94,7 +94,7 @@ public class UserFacade extends ModelFacade
         return users.get( 0 );
     }
 
-    public int registerNewUserBySteamId( String steamId ) throws IOException,
+    public int registerNewUserByGoogleId( String googleId ) throws IOException,
                                                             SQLException
     {
         ObjectMapper mapper = new ObjectMapper();
@@ -102,10 +102,10 @@ public class UserFacade extends ModelFacade
         try (CloseableHttpClient httpclient = HttpClients.createDefault();)
         {
 
-            HttpHost target = new HttpHost( "api.steampowered.com", 80, "http" );
+            HttpHost target = new HttpHost( "api.googlepowered.com", 80, "http" );
             HttpGet httprequest = new HttpGet(
-                "/ISteamUser/GetUserSummaries/v0002/?key=" + APIConstants.API_KEY
-                        + "&steamids=" + steamId );
+                "/IGoogleUser/GetUserSummaries/v0002/?key=" + APIConstants.API_KEY
+                        + "&googleids=" + googleId );
 
             if ( System.getProperty( "http.proxyHost" ) != null
                     && System.getProperty( "http.proxyPort" ) != null )
@@ -137,14 +137,14 @@ public class UserFacade extends ModelFacade
             String json = EntityUtils.toString( httpresponse.getEntity() );
             System.out.println( json );
 
-            GoogleUser steamUser = mapper.readValue( json, GoogleUser.class );
-            UserData userdata = steamUser.getResponse().getUsers().get( 0 );
+            GoogleUser googleUser = mapper.readValue( json, GoogleUser.class );
+            UserData userdata = googleUser.getResponse().getUsers().get( 0 );
 
             System.out.println( "Persona name of logged in user: " );
             System.out.println( userdata.getPersonaname() );
 
             return createNewUser( userdata.getPersonaname(),
-                userdata.getSteamid(), userdata.getAvatar() );
+                userdata.getGoogleid(), userdata.getAvatar() );
         }
     }
 

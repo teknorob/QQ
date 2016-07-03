@@ -6,15 +6,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @Generated("org.jsonschema2pojo")
-@JsonPropertyOrder({ "steamid", "communityvisibilitystate", "profilestate",
+@JsonPropertyOrder({ "googleid", "communityvisibilitystate", "profilestate",
         "personaname", "lastlogoff", "profileurl", "avatar", "avatarmedium",
         "avatarfull", "personastate", "realname", "primaryclanid", "timecreated",
         "personastateflags", "loccountrycode", "locstatecode", "loccityid" })
 public class UserData
 {
 
-    @JsonProperty("steamid")
-    private String steamid;
+    @JsonProperty("googleid")
+    private String googleid;
 
     @JsonProperty("communityvisibilitystate")
     private Integer communityvisibilitystate;
@@ -65,22 +65,22 @@ public class UserData
     private Integer loccityid;
 
     /**
-     * @return The steamid
+     * @return The googleid
      */
-    @JsonProperty("steamid")
-    public String getSteamid()
+    @JsonProperty("googleid")
+    public String getGoogleid()
     {
-        return steamid;
+        return googleid;
     }
 
     /**
-     * @param steamid
-     *            The steamid
+     * @param googleid
+     *            The googleid
      */
-    @JsonProperty("steamid")
-    public void setSteamid( String steamid )
+    @JsonProperty("googleid")
+    public void setGoogleid( String googleid )
     {
-        this.steamid = steamid;
+        this.googleid = googleid;
     }
 
     /**

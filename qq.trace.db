@@ -1,0 +1,3 @@
+2016-07-02 18:41:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLException: Table "DB_INFO" not found; SQL statement:
+SELECT tx_parameter FROM db_info WHERE cd_parameter = 'VERSION' [42102-190]

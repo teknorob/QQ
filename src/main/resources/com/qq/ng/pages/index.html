@@ -47,9 +47,13 @@
             Logged in as {{user.userName}} <a href="/logout">Log out?</a>
             <p>Role: {{user.roleCode}}</p>
       </div>
-      <div ng-show="user == null" >
+      <div ng-show="user == null">
             <div class="g-signin2" data-onsuccess="onSignIn"></div>
-     
+      </div>
+      <div ng-hide="user == null">
+            <p>Signed in as {{user.userName}}</p>
+            <img src="{{user.avatarURL}}"/>
+            <a href="#" onclick="signOut();">Sign out?</a>
       </div>
         <div class="twelve columns">
           <h1 class="section-heading">QQ</h1>

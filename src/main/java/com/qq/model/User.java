@@ -18,8 +18,12 @@ public class User
     private String userName;
 
     @Column
+    @DatabaseField(columnName = "ur_avatar")
+    private String avatarURL;
+    
+    @Column
     @DatabaseField(columnName = "id_google")
-    private String steamId;
+    private String googleId;
 
     @Column
     @DatabaseField(columnName = "id_role")
@@ -44,15 +48,25 @@ public class User
     {
         this.userName = userName;
     }
-
-    public String getSteamId()
+    
+    public String getAvatarURL()
     {
-        return steamId;
+        return avatarURL;
     }
 
-    public void setSteamId( String steamId )
+    public void setAvatarURL( String avatarURL )
     {
-        this.steamId = steamId;
+        this.avatarURL = avatarURL;
+    }
+
+    public String getGoogleId()
+    {
+        return googleId;
+    }
+
+    public void setGoogleId( String googleId )
+    {
+        this.googleId = googleId;
     }
 
     public int getRoleId()
