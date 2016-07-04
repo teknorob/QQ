@@ -22,17 +22,6 @@ public class SessionUtils
         return false;
     }
 
-    public static boolean isGodSession( Request request,
-                                        ConnectionSource connectionSource ) throws SQLException
-    {
-        User user = (User)request.session().attribute( "user" );
-        if ( user != null )
-        {
-            return ( new UserFacade( connectionSource ).isUserGod( user ) );
-        }
-        return false;
-    }
-
     public static User getCurrentUser( Request request )
     {
         return request.session().attribute( "user" );

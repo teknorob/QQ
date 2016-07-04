@@ -21,7 +21,7 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.qq.constants.APIConstants;
 import com.qq.constants.RolesConstants;
 import com.qq.core.persist.facade.ModelFacade;
-import com.qq.model.God;
+import com.qq.model.Administrator;
 import com.qq.model.Role;
 import com.qq.model.User;
 import com.qq.model.google.GoogleUser;
@@ -43,26 +43,27 @@ public class UserFacade extends ModelFacade
         return myUserDao.queryForAll();
     }
 
-    private void setGodRole( User user ) throws SQLException
+    private void setAdministrativeRoleOnExpectedGoogleId( User user ) throws SQLException
     {
-        Dao<God, String> myGodDao = DaoManager.createDao( getConnectionSource(),
-            God.class );
+        Dao<Administrator, String> myAdministratorDao = DaoManager
+            .createDao( getConnectionSource(), Administrator.class );
         Map<String, Object> fieldValues = new HashMap<>();
         fieldValues.put( "id_google", user.getGoogleId() );
 
-        List<God> gods = myGodDao.queryForFieldValues( fieldValues );
-        if ( gods.size() == 1 )
+        List<Administrator> administrators = myAdministratorDao
+            .queryForFieldValues( fieldValues );
+        if ( administrators.size() == 1 )
         {
             user.setRoleId( new RoleFacade( getConnectionSource() )
-                .getRoleFromCode( RolesConstants.GOD ).getRoleId() );
+                .getRoleFromCode( RolesConstants.ADMIN ).getRoleId() );
 
             myUserDao.update( user );
         }
 
     }
 
-    public int createNewUser( String userName, String googleId,
-                                String avatarURL ) throws SQLException
+    public User createNewUser( String userName, String googleId,
+                               String avatarURL ) throws SQLException
     {
         RoleFacade roleFacade = new RoleFacade( getConnectionSource() );
         Role role = roleFacade.getRoleFromCode( RolesConstants.USER );
@@ -73,8 +74,8 @@ public class UserFacade extends ModelFacade
         user.setRoleId( role.getRoleId() );
         myUserDao.create( user );
 
-        setGodRole( user );
-        return user.getUserId();
+        setAdministrativeRoleOnExpectedGoogleId( user );
+        return user;
     }
 
     public User getUserById( String userId ) throws SQLException
@@ -143,14 +144,14 @@ public class UserFacade extends ModelFacade
             System.out.println( "Persona name of logged in user: " );
             System.out.println( userdata.getPersonaname() );
 
-            return createNewUser( userdata.getPersonaname(),
-                userdata.getGoogleid(), userdata.getAvatar() );
+            return createNewUser( userdata.getPersonaname(), userdata.getGoogleid(),
+                userdata.getAvatar() ).getUserId();
         }
     }
 
     public boolean isUserAdmin( User user ) throws SQLException
     {
-        String[] adminCodes = { RolesConstants.ADMIN, RolesConstants.GOD };
+        String[] adminCodes = { RolesConstants.ADMIN };
         for ( String adminCode : adminCodes )
         {
             if ( new RoleFacade( getConnectionSource() ).getRoleFromCode( adminCode )
@@ -158,17 +159,6 @@ public class UserFacade extends ModelFacade
             {
                 return true;
             }
-        }
-        return false;
-    }
-
-    public boolean isUserGod( User user ) throws SQLException
-    {
-        if ( new RoleFacade( getConnectionSource() )
-            .getRoleFromCode( RolesConstants.GOD )
-            .getRoleId() == user.getRoleId() )
-        {
-            return true;
         }
         return false;
     }

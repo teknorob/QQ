@@ -6,6 +6,9 @@ import static spark.Spark.post;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Arrays;
+import java.util.Map;
+
+import org.slf4j.Logger;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
@@ -14,10 +17,14 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.RegistrableRoute;
+import com.qq.facade.UserFacade;
+import com.qq.model.User;
+import com.qq.util.LoggerUtil;
 
 public class AuthRoute extends RegistrableRoute
 {
     GoogleIdTokenVerifier verifier;
+    Logger logger = LoggerUtil.getLogger();
 
     public AuthRoute( final ConnectionSource connectionSource )
     {
@@ -43,10 +50,6 @@ public class AuthRoute extends RegistrableRoute
 
     public void register()
     {
-        get( "/auth", ( request, response ) -> {
-            return response.raw();
-        } );
-
         post( "/login", ( request, response ) -> {
             String tokenId = request.queryParams( "idtoken" );
             
@@ -68,16 +71,36 @@ public class AuthRoute extends RegistrableRoute
                 System.out.println( "Locale: " + (String)payload.get( "locale" ) );
                 System.out.println( "Family Name: " + (String)payload.get( "family_name" ) );
                 System.out.println( "Given Name: " + (String)payload.get( "given_name" ) );
+                
+                UserFacade userFacade = new UserFacade(getConnectionSource());
+                User user = userFacade.getUserByGoogleId( userId );
+                
+                if(user == null)
+                {
+                    String userName = (String)payload.get( "name" );
+                    String avatarURL = (String)payload.get( "picture" );
+                    user = userFacade.createNewUser( userName, userId, avatarURL );
+                    logger.info( "New User Created. Id: " + user.getUserId() );
+                }
+                else
+                {
+                    logger.info( "User already exists. Id: " + user.getUserId() );
+                }
+                request.session(true).attribute( "user", user );
+                
             }
             else
             {
                 System.out.println( "nuffin!" );
             }
+            response.redirect( getFullUrl( request, "/queues" ) );
             return response.raw();
         } );
 
         get( "/logout", ( request, response ) -> {
-            return response.raw();
-        } );
+            request.session(true).attribute( "user", null );
+            Map<String, Object> page = getNewPageModel( request );
+            return page;
+        }, getJsonTransformer() );
     }
 }
