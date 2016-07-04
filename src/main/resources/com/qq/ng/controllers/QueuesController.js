@@ -2,6 +2,11 @@ QQApp.controller('queuesController', function($scope, $http, userService) {
 
 	$http.get("/queues", httpConfig).success(function(response) {
 		$scope.queues = response.queues;
+		angular.forEach($scope.queues, function (queue){
+		    $http.get("/tickets", {params: {"queueId": queue.queueId} }, httpConfig).success(function(response){
+		        queue.tickets = response.tickets;
+		    });
+		} );
 		$scope.user = userService.getUser();
 		$scope.showCreateForm = false;
 	});
@@ -21,6 +26,15 @@ QQApp.controller('queuesController', function($scope, $http, userService) {
 				$scope.queues = response.queues;
 			});
 		});
+	}
+	
+	$scope.toggleUserInQueue = function(form){
+	    var queue = form.queue.$modelValue;
+	    $http.post("/tickets", queue, httpConfig).success(function(response){
+	        $http.get("/tickets?queueId=" +queue.queueId, httpConfig).success(function(response){
+                queue.tickets = response.tickets;
+            });
+	    });
 	}
 	
 	$scope.$on('userUpdated', function(event, args) {

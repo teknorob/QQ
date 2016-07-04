@@ -16,15 +16,19 @@
 <div ng-hide="showCreateForm">
 <h1>Queues</h1>
 <table>
-<tr>
-    <td ng-repeat="queue in queues">
+<tr ng-repeat="queue in queues">
+    <td>
     <label>
-        {{queue.queueName}}
-        <form name="deleteQueueForm">
+        <form name="queueForm">
         <input type="hidden" name="queue" ng-model="queue"/>
-        <img ng-show="user.roleCode=='ADMIN'" alt="" src="media/deletebutton.png" width="9" height="9" ng-click="submitDeleteQueueForm(deleteQueueForm);"/>
+        <div ng-hide="user==null"><a ng-click="toggleUserInQueue(queueForm)">{{queue.queueName}}</a></div>
+        <div ng-show="user==null">{{queue.queueName}}</div>
+        <img ng-show="user.roleCode=='ADMIN'" alt="" src="media/deletebutton.png" width="9" height="9" ng-click="submitDeleteQueueForm(queueForm);"/>
         </form>
     </label></td>
+    <td ng-repeat="ticket in queue.tickets">
+        {{ticket.userId}}
+    </td>
 </tr>
 </table>
 </div>

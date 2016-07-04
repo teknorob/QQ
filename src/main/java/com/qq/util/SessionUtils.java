@@ -21,6 +21,11 @@ public class SessionUtils
         }
         return false;
     }
+    
+    public static boolean isLoggedIn( Request request) throws SQLException
+    {
+        return (User)request.session().attribute( "user" ) != null;
+    }
 
     public static User getCurrentUser( Request request )
     {
