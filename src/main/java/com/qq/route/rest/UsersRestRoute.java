@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.RegistrableRoute;
-import com.qq.facade.UserFacade;
 
 public class UsersRestRoute extends RegistrableRoute
 {

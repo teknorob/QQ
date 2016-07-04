@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.RegistrableRoute;
-import com.qq.facade.UserFacade;
 
 public class QueuesRestRoute extends RegistrableRoute
 {
@@ -24,6 +23,7 @@ public class QueuesRestRoute extends RegistrableRoute
     {
         get( "/queues", "application/json", ( request, response ) -> {
             Map<String, Object> page = getNewPageModel( request );
+            
             return page;
         }, getJsonTransformer() );
 

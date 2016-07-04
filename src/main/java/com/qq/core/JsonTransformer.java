@@ -1,7 +1,6 @@
 package com.qq.core;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -49,8 +48,6 @@ public class JsonTransformer implements ResponseTransformer
                                                           JsonMappingException,
                                                           IOException
     {
-        Map<String, Object> map = new HashMap<String, Object>();
-
         // convert JSON string to Map
         return mapper.readValue( json, new TypeReference<Map<String, String>>()
         {

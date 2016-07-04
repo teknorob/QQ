@@ -1,15 +1,12 @@
 package com.qq.route.rest;
 
-import static spark.Spark.delete;
 import static spark.Spark.get;
-import static spark.Spark.put;
 
 import java.sql.SQLException;
 import java.util.Map;
 
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.RegistrableRoute;
-import com.qq.facade.UserFacade;
 
 public class UserRestRoute extends RegistrableRoute
 {
