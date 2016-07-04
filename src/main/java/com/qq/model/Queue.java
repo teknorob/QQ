@@ -1,36 +1,78 @@
 package com.qq.model;
 
+import java.sql.Time;
+import java.util.Date;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
-@DatabaseTable(tableName = "role")
+@DatabaseTable(tableName = "queue")
 public class Queue
 {
 
-    @DatabaseField(columnName = "id_role", generatedId = true)
-    private int roleId;
+    @DatabaseField(columnName = "id_queue", generatedId = true)
+    private Integer queueId;
 
-    @DatabaseField(columnName = "cd_role")
-    private String roleCode;
+    @DatabaseField(columnName = "nm_queue")
+    private String queueName;
+    
+    @DatabaseField(columnName = "no_ticket_expiry_duration")
+    private Integer ticketExpiryDuration;
+    
+    @DatabaseField(columnName = "ti_open_time")
+    private Date openTime;   
 
-    public int getRoleId()
+    @DatabaseField(columnName = "ti_close_time")
+    private Date closeTime;
+    
+    public int getQueueId()
     {
-        return roleId;
+        return queueId;
     }
 
-    public void setRoleId( int roleId )
+    public void setQueueId( int queueId )
     {
-        this.roleId = roleId;
+        this.queueId = queueId;
     }
 
-    public String getRoleCode()
+    public String getQueueName()
     {
-        return roleCode;
+        return queueName;
     }
 
-    public void setRoleCode( String roleCode )
+    public void setQueueName( String queueName )
     {
-        this.roleCode = roleCode;
+        this.queueName = queueName;
+    }
+
+    public Integer getTicketExpiryDuration()
+    {
+        return ticketExpiryDuration;
+    }
+
+    public void setTicketExpiryDuration( Integer ticketExpiryDuration )
+    {
+        this.ticketExpiryDuration = ticketExpiryDuration;
+    }
+
+    public Date getOpenTime()
+    {
+        return openTime;
+    }
+
+    public void setOpenTime( Date openTime )
+    {
+        this.openTime = openTime;
+    }
+
+    public Date getCloseTime()
+    {
+        return closeTime;
+    }
+
+    public void setCloseTime( Date closeTime )
+    {
+        this.closeTime = closeTime;
     }
 
 }

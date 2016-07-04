@@ -11,7 +11,11 @@ var QQApp = angular.module("QQApp",[
      .when('/queues', {
          templateUrl: 'pages/queues.html',
          controller: 'queuesController'
-     })
+     }).
+     otherwise(
+     {
+    	 templateUrl: '404.html',
+     });
  });
  
  var httpConfig = {headers: {'Accept': 'application/json;odata=verbose'}};

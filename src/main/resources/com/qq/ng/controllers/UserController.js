@@ -1,4 +1,4 @@
-QQApp.controller('userController', function($scope, $http, userService) {
+QQApp.controller('userController', function($scope, $http, $rootScope, userService) {
 
     $http.get("/user", httpConfig).success(function(response) {
         $scope.updateUser(response);
@@ -12,6 +12,7 @@ QQApp.controller('userController', function($scope, $http, userService) {
             });
             userService.setUser(null);
             $scope.user = null;
+            $rootScope.$broadcast('userUpdated');
         });
     }
 
@@ -21,6 +22,7 @@ QQApp.controller('userController', function($scope, $http, userService) {
         };
         $http.post("/login", token, httpConfig).success(function(response) {
             $scope.updateUser(response);
+            $rootScope.$broadcast('userUpdated');
         });
     });
 
@@ -39,5 +41,6 @@ QQApp.controller('userController', function($scope, $http, userService) {
                     });
         }
     };
-
+    
+    
 });

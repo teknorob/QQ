@@ -28,6 +28,10 @@ public class User
     @Column
     @DatabaseField(columnName = "id_role")
     private int roleId;
+    
+    @Column
+    @DatabaseField(columnName = "tx_phone_number")
+    private int phoneNumber;
 
     public int getUserId()
     {
@@ -77,6 +81,16 @@ public class User
     public void setRoleId( int roleId )
     {
         this.roleId = roleId;
+    }
+
+    public int getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber( int phoneNumber )
+    {
+        this.phoneNumber = phoneNumber;
     }
 
 }

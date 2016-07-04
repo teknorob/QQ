@@ -27,21 +27,20 @@ public class QueueFacade extends ModelFacade
         return myQueueDao.queryForAll();
     }
 
-    public Queue getQueueFromCode( String code ) throws SQLException
-    {
-        Map<String, Object> filterValues = new HashMap<>();
-        filterValues.put( "cd_queue", code );
-        List<Queue> queues = myQueueDao.queryForFieldValues( filterValues );
-        if ( queues.size() != 1 )
-        {
-            return null;
-        }
-        return queues.get( 0 );
-    }
-
     public Queue getQueueById( String id ) throws SQLException
     {
         return myQueueDao.queryForId( id );
+    }
+
+    public Queue createQueue( Queue queue ) throws SQLException
+    {
+        return myQueueDao.create( queue ) == 1? queue : null;
+    }
+
+    public void deleteQueueById( String id ) throws SQLException
+    {
+        myQueueDao.deleteById( id );
+        
     }
     
 }

@@ -17,6 +17,7 @@ CREATE TABLE IF NOT EXISTS user (
   id_google VARCHAR(45) NOT NULL,
   ur_avatar VARCHAR(1000),
   id_role INT NOT NULL,
+  tx_phone_number VARCHAR(45) NOT NULL,
   PRIMARY KEY (id_user),
   UNIQUE INDEX nm_steam_UNIQUE (id_google ASC),
   INDEX fk_player_role1_idx (id_role ASC),
@@ -34,8 +35,8 @@ CREATE TABLE IF NOT EXISTS queue (
   id_queue INT NOT NULL AUTO_INCREMENT,
   nm_queue VARCHAR(45) NOT NULL,
   no_ticket_expiry_duration INT NOT NULL,
-  ti_open_time TIME NOT NULL,
-  ti_close_time TIME NULL,
+  ti_open_time DATETIME NOT NULL,
+  ti_close_time DATETIME NULL,
   PRIMARY KEY (id_queue));
 
 
@@ -44,18 +45,18 @@ CREATE TABLE IF NOT EXISTS queue (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS ticket (
   id_ticket INT NOT NULL AUTO_INCREMENT,
-  queue_id_queue INT NOT NULL,
-  user_id_user INT NOT NULL,
+  id_queue INT NOT NULL,
+  id_user INT NOT NULL,
   PRIMARY KEY (id_ticket),
-  INDEX fk_ticket_queue1_idx (queue_id_queue ASC),
-  INDEX fk_ticket_user1_idx (user_id_user ASC),
+  INDEX fk_ticket_queue1_idx (id_queue ASC),
+  INDEX fk_ticket_user1_idx (id_user ASC),
   CONSTRAINT fk_ticket_queue1
-    FOREIGN KEY (queue_id_queue)
+    FOREIGN KEY (id_queue)
     REFERENCES queue (id_queue)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT fk_ticket_user1
-    FOREIGN KEY (user_id_user)
+    FOREIGN KEY (id_user)
     REFERENCES user (id_user)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);

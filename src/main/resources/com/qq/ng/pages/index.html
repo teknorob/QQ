@@ -45,16 +45,11 @@
       </div>
       <div ng-hide="user == null">
             <span title="{{user.roleCode}}">Signed in as {{user.userName}}</span>
-            <img src="{{user.avatarURL}}"/>
+            <img src="{{user.avatarURL}}" height="40" width="40" alt=""/>
             <a ng-click="signout();">Sign out?</a>
       </div>
         <div class="twelve columns">
-          <h1 class="section-heading">QQ</h1>
-          <div id="nav" class="fourteen columns">
-		      <ul>
-		          <li><a href="#queues">Q's</a></li>
-	          </ul>
-		  </div>
+          <h1 class="section-heading">Quick Q</h1>
         </div>
       </div>
     </div>

@@ -59,6 +59,7 @@ public class UserFacade extends ModelFacade
         user.setUserName( userName );
         user.setGoogleId( googleId );
         user.setRoleId( role.getRoleId() );
+        user.setAvatarURL( avatarURL );
         myUserDao.create( user );
 
         setAdministrativeRoleOnExpectedGoogleId( user );

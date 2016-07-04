@@ -1,6 +1,30 @@
+<div class="nav"><button ng-show="user.roleCode=='ADMIN'" ng-click="showCreateForm = !showCreateForm">Create Queue?</button></div>
+<div ng-show="showCreateForm && user.roleCode=='ADMIN'" >
+<form ng-submit="showCreateForm = !showCreateForm; submitCreateQueueForm();">
+    <label>Queue Name:</label>
+    <input name="queueName" ng-model="newQueue.queueName" placeholder="Enter a queue name..."/>
+    <label>Ticket TTL ( Time to live in seconds):</label>
+    <input type="number" min="0" max="600" name="ticketExpiryDuration" ng-model="newQueue.ticketExpiryDuration" placeholder="... seconds"/>
+    <label>Open Time:</label>
+    <input type="time" name="openTime" ng-model="newQueue.openTime"/>
+    <label>Close Time:</label>
+    <input type="time" name="closeTime" ng-model="newQueue.closeTime"/>
+    
+    <input type="submit" id="submit" value="Submit" />
+</form>
+</div>
+<div ng-hide="showCreateForm">
+<h1>Queues</h1>
 <table>
 <tr>
-    <td><label>Queue #1</label></td>
-    <td><label>Queue #2</label></td>
+    <td ng-repeat="queue in queues">
+    <label>
+        {{queue.queueName}}
+        <form name="deleteQueueForm">
+        <input type="hidden" name="queue" ng-model="queue"/>
+        <img ng-show="user.roleCode=='ADMIN'" alt="" src="media/deletebutton.png" width="9" height="9" ng-click="submitDeleteQueueForm(deleteQueueForm);"/>
+        </form>
+    </label></td>
 </tr>
 </table>
+</div>
