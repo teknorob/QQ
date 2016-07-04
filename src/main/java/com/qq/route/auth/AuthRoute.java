@@ -15,6 +15,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
+import com.google.gson.Gson;
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.RegistrableRoute;
 import com.qq.facade.UserFacade;
@@ -51,27 +52,13 @@ public class AuthRoute extends RegistrableRoute
     public void register()
     {
         post( "/login", ( request, response ) -> {
-            String tokenId = request.queryParams( "idtoken" );
+            String tokenId = getJsonTransformer().stringToMap( request.body() ).get( "tokenId" );
             
             GoogleIdToken idToken = verifier.verify( tokenId );
             if ( idToken != null )
             {
-                System.out.println( "=User verified=");
                 Payload payload = idToken.getPayload();
-
-                // Print user identifier
                 String userId = payload.getSubject();
-                System.out.println( "User ID: " + userId );
-
-                // Get profile information from payload
-                System.out.println( "Email: " + payload.getEmail() );
-                System.out.println( "Email Verified: " + payload.getEmailVerified() );
-                System.out.println( "Name: " + (String)payload.get( "name" ) );
-                System.out.println( "Picture: " + (String)payload.get( "picture" ) );
-                System.out.println( "Locale: " + (String)payload.get( "locale" ) );
-                System.out.println( "Family Name: " + (String)payload.get( "family_name" ) );
-                System.out.println( "Given Name: " + (String)payload.get( "given_name" ) );
-                
                 UserFacade userFacade = new UserFacade(getConnectionSource());
                 User user = userFacade.getUserByGoogleId( userId );
                 
@@ -82,20 +69,12 @@ public class AuthRoute extends RegistrableRoute
                     user = userFacade.createNewUser( userName, userId, avatarURL );
                     logger.info( "New User Created. Id: " + user.getUserId() );
                 }
-                else
-                {
-                    logger.info( "User already exists. Id: " + user.getUserId() );
-                }
                 request.session(true).attribute( "user", user );
                 
             }
-            else
-            {
-                System.out.println( "nuffin!" );
-            }
-            response.redirect( getFullUrl( request, "/queues" ) );
-            return response.raw();
-        } );
+            Map<String, Object> page = getNewPageModel( request );
+            return page;
+        }, getJsonTransformer() );
 
         get( "/logout", ( request, response ) -> {
             request.session(true).attribute( "user", null );

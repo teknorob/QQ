@@ -1,5 +1,6 @@
 var QQApp = angular.module("QQApp",[
- 'ngRoute'
+ 'ngRoute',
+ 'directive.g+signin'
  ]);
 
  QQApp.config(function ($routeProvider) {

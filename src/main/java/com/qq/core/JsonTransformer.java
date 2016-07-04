@@ -1,11 +1,17 @@
 package com.qq.core;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
-import spark.ResponseTransformer;
-
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import spark.ResponseTransformer;
 
 public class JsonTransformer implements ResponseTransformer
 {
@@ -37,6 +43,18 @@ public class JsonTransformer implements ResponseTransformer
             return "{" + builder.toString() + "}";
         }
         return mapper.writeValueAsString( model );
+    }
+
+    public Map<String, String> stringToMap( String json ) throws JsonParseException,
+                                                          JsonMappingException,
+                                                          IOException
+    {
+        Map<String, Object> map = new HashMap<String, Object>();
+
+        // convert JSON string to Map
+        return mapper.readValue( json, new TypeReference<Map<String, String>>()
+        {
+        } );
     }
 
 }

@@ -33,18 +33,20 @@
     <script src="../controllers/UserController.js"></script>
     <script src="../controllers/QueuesController.js"></script>
     <script src="../services/UserService.js"></script>
-    <script src="js/googleauth.js"></script>
+    <!-- <script src="js/googleauth.js"></script> -->
+    <script src="js/google-plus-signin.js"></script>
     
     
     
-    <meta name="google-signin-client_id" content="793252566542-hsgoksf7aq342gsbpq50lnvilem7gbds.apps.googleusercontent.com"/>
+    <!-- <meta name="google-signin-client_id" content="793252566542-hsgoksf7aq342gsbpq50lnvilem7gbds.apps.googleusercontent.com"/> -->
 </head>
 <body>
 <div class="section header" ng-controller="userController">
     <div class="container">
       <div class="row">
       <div ng-show="user == null">
-            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+             <google-plus-signin clientid="793252566542-hsgoksf7aq342gsbpq50lnvilem7gbds.apps.googleusercontent.com" language="sv"/>
       </div>
       <div ng-hide="user == null">
             <p>Signed in as {{user.userName}}</p>

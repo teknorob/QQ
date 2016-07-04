@@ -1,12 +1,36 @@
 QQApp.controller('userController', function($scope, $http, userService) {
-    
+
     $http.get("/user", httpConfig).success(function(response) {
-        $scope.user = response.user;
-        setRoleCodeOnUser($scope.user);
-        userService.setUser($scope.user);
+        $scope.updateUser(response);
     });
-    
-    setRoleCodeOnUser = function(user) {
+
+    $scope.signout = function() {
+        $http.get("/logout", httpConfig).success(function(response) {
+            var auth2 = gapi.auth2.getAuthInstance();
+            auth2.signOut().then(function() {
+                console.log('User signed out.');
+            });
+            userService.setUser(null);
+            $scope.user = null;
+        });
+    }
+
+    $scope.$on('event:google-plus-signin-success', function(event, authResult) {
+        token = {
+            "tokenId" : authResult.hg.id_token
+        };
+        $http.post("/login", token, httpConfig).success(function(response) {
+            $scope.updateUser(response);
+        });
+    });
+
+    $scope.updateUser = function(response) {
+        $scope.user = response.user;
+        $scope.setRoleCodeOnUser($scope.user);
+        userService.setUser($scope.user);
+    };
+
+    $scope.setRoleCodeOnUser = function(user) {
         if (user != null) {
             $http.get("/roles/" + user.roleId, httpConfig).success(
                     function(response) {
@@ -15,17 +39,5 @@ QQApp.controller('userController', function($scope, $http, userService) {
                     });
         }
     };
-    
-    $scope.signout = function()
-    {
-        $http.get("/logout", httpConfig).success(function(response) {
-            var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-              console.log('User signed out.');
-            });
-            userService.setUser(null);
-            $scope.user = null;
-        });
-    }
-    
+
 });
