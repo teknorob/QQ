@@ -54,6 +54,13 @@ QQApp.controller('queuesController', function($scope, $http, userService) {
         });
 	}
 	
+	$scope.testSms = function()
+	{
+		$http.get("/testSms", httpConfig).success(function(response){
+			console.log("message id #" + response.messageId);
+		});
+	}
+	
 	$scope.$on('userUpdated', function(event, args) {
 		$scope.user = userService.getUser();
 	});
