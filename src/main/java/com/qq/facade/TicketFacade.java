@@ -50,4 +50,9 @@ public class TicketFacade extends ModelFacade
         myTicketDao.create( ticket );
         return ticket;
     }
+
+    public void deleteAllTicketsForQueue( String id ) throws SQLException
+    {
+        myTicketDao.delete( getTicketsForQueue( id ) );
+    }
 }

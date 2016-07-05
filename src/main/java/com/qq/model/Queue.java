@@ -1,13 +1,13 @@
 package com.qq.model;
 
-import java.sql.Time;
 import java.util.Date;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.qq.core.model.QQModel;
 
 @DatabaseTable(tableName = "queue")
-public class Queue
+public class Queue implements QQModel
 {
 
     @DatabaseField(columnName = "id_queue", generatedId = true)
@@ -74,5 +74,5 @@ public class Queue
     {
         this.closeTime = closeTime;
     }
-
+    
 }

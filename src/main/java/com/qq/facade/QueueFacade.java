@@ -39,6 +39,8 @@ public class QueueFacade extends ModelFacade
 
     public void deleteQueueById( String id ) throws SQLException
     {
+        TicketFacade ticketFacade = new TicketFacade(getConnectionSource());
+        ticketFacade.deleteAllTicketsForQueue(id);
         myQueueDao.deleteById( id );
         
     }
