@@ -15,16 +15,16 @@ public class Queue implements QQModel
 
     @DatabaseField(columnName = "nm_queue")
     private String queueName;
-    
+
     @DatabaseField(columnName = "no_ticket_expiry_duration")
     private Integer ticketExpiryDuration;
-    
+
     @DatabaseField(columnName = "ti_open_time")
-    private Date openTime;   
+    private Date openTime;
 
     @DatabaseField(columnName = "ti_close_time")
     private Date closeTime;
-    
+
     public int getQueueId()
     {
         return queueId;
@@ -74,5 +74,5 @@ public class Queue implements QQModel
     {
         this.closeTime = closeTime;
     }
-    
+
 }

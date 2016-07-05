@@ -21,16 +21,16 @@ public class IndexRoute extends RegistrableRoute
     }
 
     @Override
-    public Object handle( final Request request, final Response response )
-                                                                          throws Exception
+    public Object handle( final Request request,
+                          final Response response ) throws Exception
     {
-        try (final InputStream in = getClass().getClassLoader().getResourceAsStream(
-            "com/qq/ng/pages/index.html" );
+        try (final InputStream in = getClass().getClassLoader()
+            .getResourceAsStream( "com/qq/ng/pages/index.html" );
                 final OutputStream out = response.raw().getOutputStream())
         {
             IOUtils.copy( in, out );
         }
-        catch(Exception e)
+        catch ( Exception e )
         {
             response.redirect( getFullUrl( request, "/404" ) );
         }

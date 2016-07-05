@@ -69,8 +69,7 @@ public class RouteManager
             logger.info(
                 "Registering Static Content Route (this must be done last)." );
             new StaticContentRoute( connectionSource ).register();
-            logger.info(
-                "Route Registered: " + StaticContentRoute.class.getName() );
+            logger.info( "Route Registered: " + StaticContentRoute.class.getName() );
 
             logger.info( "All Routes Registered." );
 

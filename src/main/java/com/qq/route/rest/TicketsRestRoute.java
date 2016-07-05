@@ -1,5 +1,6 @@
 package com.qq.route.rest;
 
+import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
@@ -78,6 +79,19 @@ public class TicketsRestRoute extends RegistrableRoute
                 TicketFacade ticketFacade = new TicketFacade(
                     getConnectionSource() );
                 page.put( "tickets", ticketFacade.createTicket( queue, user ) );
+            }
+            return page;
+        }, getJsonTransformer() );
+        delete( "/tickets/:ticketId", "application/json", ( request, response ) -> {
+            Map<String, Object> page = getNewPageModel( request );
+            TicketFacade ticketFacade = new TicketFacade( getConnectionSource() );
+            Ticket ticket = ticketFacade
+                .getTicketById( request.queryParams( ":ticketId" ) );
+            if ( SessionUtils.isAdminSession( request, getConnectionSource() )
+                    || ( SessionUtils.getCurrentUser( request ).getUserId() + "" )
+                        .equals( ticket.getUserId() ) )
+            {
+                ticketFacade.deleteTicketById( request.params( ":ticketId" ) );
             }
             return page;
         }, getJsonTransformer() );

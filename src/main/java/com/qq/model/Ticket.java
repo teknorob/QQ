@@ -12,7 +12,7 @@ public class Ticket
 
     @DatabaseField(columnName = "id_queue")
     private String queueId;
-    
+
     @DatabaseField(columnName = "id_user")
     private String userId;
 

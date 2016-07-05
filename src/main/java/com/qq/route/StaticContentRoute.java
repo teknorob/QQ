@@ -27,8 +27,8 @@ public class StaticContentRoute extends RegistrableRoute
     }
 
     @Override
-    public Object handle( final Request request, final Response response )
-                                                                          throws Exception
+    public Object handle( final Request request,
+                          final Response response ) throws Exception
     {
         String uriString;
         if ( request.splat() == null || request.splat().length == 0 )
@@ -41,14 +41,14 @@ public class StaticContentRoute extends RegistrableRoute
         }
 
         boolean notFound = true;
-        String fullResourceAddress="";
-        List<String> resourcePaths = Arrays.asList( new String[] {
-                "com/qq/staticcontent/", "com/qq/ng/" } );
+        String fullResourceAddress = "";
+        List<String> resourcePaths = Arrays
+            .asList( new String[] { "com/qq/staticcontent/", "com/qq/ng/" } );
         for ( String resourcePath : resourcePaths )
         {
             fullResourceAddress = resourcePath + uriString;
-            final URL url = getClass().getClassLoader().getResource(
-                resourcePath + uriString );
+            final URL url = getClass().getClassLoader()
+                .getResource( resourcePath + uriString );
             if ( url == null )
             {
                 notFound = true;
@@ -74,8 +74,8 @@ public class StaticContentRoute extends RegistrableRoute
             fullResourceAddress = "com/qq/staticcontent/404.html";
         }
 
-        try (final InputStream in = getClass().getClassLoader().getResourceAsStream(
-            fullResourceAddress );
+        try (final InputStream in = getClass().getClassLoader()
+            .getResourceAsStream( fullResourceAddress );
                 final OutputStream out = response.raw().getOutputStream())
         {
             IOUtils.copy( in, out );

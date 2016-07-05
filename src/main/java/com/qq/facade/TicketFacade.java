@@ -46,7 +46,7 @@ public class TicketFacade extends ModelFacade
         Ticket ticket = new Ticket();
         ticket.setQueueId( queue.getQueueId() + "" );
         ticket.setUserId( user.getUserId() + "" );
-        
+
         myTicketDao.create( ticket );
         return ticket;
     }
@@ -54,5 +54,10 @@ public class TicketFacade extends ModelFacade
     public void deleteAllTicketsForQueue( String id ) throws SQLException
     {
         myTicketDao.delete( getTicketsForQueue( id ) );
+    }
+
+    public void deleteTicketById( String id ) throws SQLException
+    {
+        myTicketDao.deleteById( id );
     }
 }

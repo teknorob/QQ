@@ -24,16 +24,17 @@ import com.qq.util.LoggerUtil;
 public class AuthRoute extends RegistrableRoute
 {
     GoogleIdTokenVerifier verifier;
+
     Logger logger = LoggerUtil.getLogger();
 
     public AuthRoute( final ConnectionSource connectionSource )
     {
         super( connectionSource );
         NetHttpTransport transport;
-        if ( System.getProperty( "http.proxyHost" ) != null)
+        if ( System.getProperty( "http.proxyHost" ) != null )
         {
             Proxy proxy = new Proxy( Proxy.Type.HTTP,
-                new InetSocketAddress( System.getProperty( "http.proxyHost"),
+                new InetSocketAddress( System.getProperty( "http.proxyHost" ),
                     Integer.parseInt( System.getProperty( "http.proxyPort" ) ) ) );
             transport = new NetHttpTransport.Builder().setProxy( proxy ).build();
         }
@@ -51,32 +52,33 @@ public class AuthRoute extends RegistrableRoute
     public void register()
     {
         post( "/login", ( request, response ) -> {
-            String tokenId = getJsonTransformer().stringToMap( request.body() ).get( "tokenId" );
-            
+            String tokenId = getJsonTransformer().stringToMap( request.body() )
+                .get( "tokenId" );
+
             GoogleIdToken idToken = verifier.verify( tokenId );
             if ( idToken != null )
             {
                 Payload payload = idToken.getPayload();
                 String userId = payload.getSubject();
-                UserFacade userFacade = new UserFacade(getConnectionSource());
+                UserFacade userFacade = new UserFacade( getConnectionSource() );
                 User user = userFacade.getUserByGoogleId( userId );
-                
-                if(user == null)
+
+                if ( user == null )
                 {
                     String userName = (String)payload.get( "name" );
                     String avatarURL = (String)payload.get( "picture" );
                     user = userFacade.createNewUser( userName, userId, avatarURL );
                     logger.info( "New User Created. Id: " + user.getUserId() );
                 }
-                request.session(true).attribute( "user", user );
-                
+                request.session( true ).attribute( "user", user );
+
             }
             Map<String, Object> page = getNewPageModel( request );
             return page;
         }, getJsonTransformer() );
 
         get( "/logout", ( request, response ) -> {
-            request.session(true).attribute( "user", null );
+            request.session( true ).attribute( "user", null );
             Map<String, Object> page = getNewPageModel( request );
             return page;
         }, getJsonTransformer() );

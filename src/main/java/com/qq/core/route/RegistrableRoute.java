@@ -65,8 +65,7 @@ public abstract class RegistrableRoute implements Route
         User user = (User)request.session().attribute( "user" );
         if ( user != null )
         {
-            user = userFacade
-                .getUserById( Integer.toString( user.getUserId() ) );
+            user = userFacade.getUserById( Integer.toString( user.getUserId() ) );
         }
         page.put( "user", user );
         return page;

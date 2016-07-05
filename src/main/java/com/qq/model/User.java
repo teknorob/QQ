@@ -20,7 +20,7 @@ public class User
     @Column
     @DatabaseField(columnName = "ur_avatar")
     private String avatarURL;
-    
+
     @Column
     @DatabaseField(columnName = "id_google")
     private String googleId;
@@ -28,7 +28,7 @@ public class User
     @Column
     @DatabaseField(columnName = "id_role")
     private int roleId;
-    
+
     @Column
     @DatabaseField(columnName = "tx_phone_number")
     private int phoneNumber;
@@ -52,7 +52,7 @@ public class User
     {
         this.userName = userName;
     }
-    
+
     public String getAvatarURL()
     {
         return avatarURL;

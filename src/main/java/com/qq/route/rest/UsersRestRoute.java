@@ -35,7 +35,7 @@ public class UsersRestRoute extends RegistrableRoute
             Map<String, Object> page = getNewPageModel( request );
             return page;
         }, getJsonTransformer() );
-        
+
         put( "/users", "application/json", ( request, response ) -> {
             return null;
         }, getJsonTransformer() );

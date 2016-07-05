@@ -55,8 +55,7 @@ public class Main
 
         final String connectionPassword = filePassword + " " + sqlPassword;
         final JdbcConnectionPool connectionPool = JdbcConnectionPool.create(
-            "jdbc:h2:./qq;CIPHER=AES;mode=mysql", sqlUsername,
-            connectionPassword );
+            "jdbc:h2:./qq;CIPHER=AES;mode=mysql", sqlUsername, connectionPassword );
 
         // Initialize database if required
         try (final Connection connection = connectionPool.getConnection())

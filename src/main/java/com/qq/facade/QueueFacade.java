@@ -34,15 +34,15 @@ public class QueueFacade extends ModelFacade
 
     public Queue createQueue( Queue queue ) throws SQLException
     {
-        return myQueueDao.create( queue ) == 1? queue : null;
+        return myQueueDao.create( queue ) == 1 ? queue : null;
     }
 
     public void deleteQueueById( String id ) throws SQLException
     {
-        TicketFacade ticketFacade = new TicketFacade(getConnectionSource());
-        ticketFacade.deleteAllTicketsForQueue(id);
+        TicketFacade ticketFacade = new TicketFacade( getConnectionSource() );
+        ticketFacade.deleteAllTicketsForQueue( id );
         myQueueDao.deleteById( id );
-        
+
     }
-    
+
 }

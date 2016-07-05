@@ -20,23 +20,37 @@ QQApp.controller('queuesController', function($scope, $http, userService) {
 	$scope.submitDeleteQueueForm = function(form){
 		var queue = form.queue.$modelValue;
 		$http.delete("/queues/" + queue.queueId, httpConfig ).success(function(response){
-			$http.get("/queues", httpConfig).success(function(response) {
-				$scope.queues = response.queues;
-			});
+		    $scope.queues.splice($scope.queues.indexOf(queue),1);
 		});
 	}
 	
 	$scope.toggleUserInQueue = function(form){
 	    var queue = form.queue.$modelValue;
-	    queue.tickets = null;
-	    $http.post("/tickets", queue, httpConfig).success(function(response){
-            $scope.updateQueueTickets(queue);
-	    });
+	    if(queue.userTicket == null){
+            $http.post("/tickets", queue, httpConfig).success(function(response){
+                $scope.updateQueueTickets(queue);
+            });	        
+	    }
+	    else{
+            $http.delete("/tickets/"+queue.userTicket.ticketId, httpConfig).success(function(response){
+                $scope.updateQueueTickets(queue);
+            });
+	    }
+	    
 	}
 	
 	$scope.updateQueueTickets = function(queue){
 	    $http.get("/tickets?queueId=" +queue.queueId, httpConfig).success(function(response){
             queue.tickets = response.tickets;
+            queue.userTicket = null;
+            var user = userService.getUser();
+            if(user != null){
+                angular.forEach(queue.tickets, function (ticket){
+                    if(ticket.userId == user.userId){
+                        queue.userTicket = ticket;
+                    }
+                });
+            }
         });
 	}
 	
