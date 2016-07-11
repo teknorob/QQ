@@ -11,3 +11,5 @@ No more getting shitty with people cutting the queue and shit.
 Get this shit through a proxy?
 gradle -PproxyHost=<proxyhostaddress> -PproxyPort=<proxyPort> run
 
+If you find this useful, maybe you'd like to:
+[![Buy Me a Coffee at ko-fi.com](https://az743702.vo.msecnd.net/cdn/kofi6.png?v=b)](https://ko-fi.com/A3865PO)
