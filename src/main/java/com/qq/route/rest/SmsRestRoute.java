@@ -5,7 +5,6 @@ import static spark.Spark.get;
 import java.sql.SQLException;
 import java.util.Map;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.RegistrableRoute;
 import com.qq.facade.SmsFacade;

@@ -1,5 +1,5 @@
 {
     "googleClientId": "793252566542-hsgoksf7aq342gsbpq50lnvilem7gbds.apps.googleusercontent.com",
-    "httpProxyHost": "www.test.com",
-    "httpProxyPort": "12345"
+    "httpProxyHost": "localhost",
+    "httpProxyPort": "3128"
 }

@@ -1,7 +1,5 @@
 package com.qq.model;
 
-import javax.persistence.Column;
-
 import com.qq.core.model.QQModel;
 
 public class TwilioConfig implements QQModel

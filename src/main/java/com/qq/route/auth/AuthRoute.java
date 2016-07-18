@@ -46,8 +46,8 @@ public class AuthRoute extends RegistrableRoute
         if( !StringUtils.isEmpty( qqConfig.getHttpProxyHost() ) )
         {
             Proxy proxy = new Proxy( Proxy.Type.HTTP,
-                new InetSocketAddress( System.getProperty( qqConfig.getHttpProxyHost() ),
-                    Integer.parseInt( System.getProperty( qqConfig.getHttpProxyPort() ) ) ) );
+                new InetSocketAddress( qqConfig.getHttpProxyHost(),
+                    Integer.parseInt( qqConfig.getHttpProxyPort() ) ) );
             transport = new NetHttpTransport.Builder().setProxy( proxy ).build();
         }
         else
