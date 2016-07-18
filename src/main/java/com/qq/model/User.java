@@ -31,7 +31,7 @@ public class User
 
     @Column
     @DatabaseField(columnName = "tx_phone_number")
-    private int phoneNumber;
+    private String phoneNumber;
 
     public int getUserId()
     {
@@ -83,12 +83,12 @@ public class User
         this.roleId = roleId;
     }
 
-    public int getPhoneNumber()
+    public String getPhoneNumber()
     {
         return phoneNumber;
     }
 
-    public void setPhoneNumber( int phoneNumber )
+    public void setPhoneNumber( String phoneNumber )
     {
         this.phoneNumber = phoneNumber;
     }
