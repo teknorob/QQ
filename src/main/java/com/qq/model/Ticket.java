@@ -1,5 +1,8 @@
 package com.qq.model;
 
+import java.sql.Timestamp;
+import java.util.Comparator;
+
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -15,6 +18,9 @@ public class Ticket
 
     @DatabaseField(columnName = "id_user")
     private String userId;
+
+    @DatabaseField(columnName = "dt_last_updated")
+    private Timestamp lastUpdated;
 
     public int getTicketId()
     {
@@ -44,6 +50,16 @@ public class Ticket
     public void setUserId( String userId )
     {
         this.userId = userId;
+    }
+
+    public Timestamp getLastUpdated()
+    {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated( Timestamp lastUpdated )
+    {
+        this.lastUpdated = lastUpdated;
     }
 
 }

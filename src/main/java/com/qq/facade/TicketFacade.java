@@ -60,4 +60,26 @@ public class TicketFacade extends ModelFacade
     {
         myTicketDao.deleteById( id );
     }
+
+    public Ticket getNextTicketForQueue( String queueId ) throws SQLException
+    {
+        List<Ticket> tickets = getTicketsForQueue( queueId );
+
+        if ( tickets.size() > 0 )
+        {
+            tickets.sort( ( ticket0, ticket1 ) -> {
+                return ticket0.getLastUpdated()
+                    .compareTo( ticket1.getLastUpdated() );
+            } );
+
+            return tickets.get( 0 );
+        }
+        return null;
+    }
+
+    public void updateTicket( Ticket ticket ) throws SQLException
+    {
+        myTicketDao.update( ticket );
+    }
+
 }

@@ -1,9 +1,7 @@
 package com.qq.facade;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
@@ -44,5 +42,4 @@ public class QueueFacade extends ModelFacade
         myQueueDao.deleteById( id );
 
     }
-
 }

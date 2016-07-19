@@ -63,26 +63,6 @@ CREATE TABLE IF NOT EXISTS ticket (
 
 
 -- -----------------------------------------------------
--- Table round
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS round (
-  id_round INT NOT NULL,
-  no_week INT NULL,
-  id_competition INT NOT NULL,
-  PRIMARY KEY (id_round));
-
-
--- -----------------------------------------------------
--- Table round
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS round (
-  id_round INT NOT NULL,
-  no_week INT NULL,
-  id_competition INT NOT NULL,
-  PRIMARY KEY (id_round));
-
-
--- -----------------------------------------------------
 -- Table administrator
 --   This table is pre-propulated in the init script with 
 --   google id's of pre-determined administrators. 
