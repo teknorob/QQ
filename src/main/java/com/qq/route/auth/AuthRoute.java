@@ -91,7 +91,7 @@ public class AuthRoute extends RegistrableRoute
         
         post( "/serviceLogin", ( request, response ) -> {
             String password = getJsonTransformer().stringToMap( request.body() )
-                .get( "password" );
+                    .get( "password" );
             
             if(qqConfig.getServiceAccountPassword().equals( password ))
             {
