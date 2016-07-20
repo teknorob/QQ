@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS role (
 CREATE TABLE IF NOT EXISTS user (
   id_user INT NOT NULL AUTO_INCREMENT,
   nm_user VARCHAR(45) NOT NULL,
-  id_google VARCHAR(45) NOT NULL,
+  id_google VARCHAR(45),
   ur_avatar VARCHAR(600),
   id_role INT NOT NULL,
   tx_phone_number VARCHAR(45) NOT NULL,
@@ -47,6 +47,7 @@ CREATE TABLE IF NOT EXISTS ticket (
   id_ticket INT NOT NULL AUTO_INCREMENT,
   id_queue INT NOT NULL,
   id_user INT NOT NULL,
+  dt_last_updated TIMESTAMP NOT NULL,
   PRIMARY KEY (id_ticket),
   INDEX fk_ticket_queue1_idx (id_queue ASC),
   INDEX fk_ticket_user1_idx (id_user ASC),
@@ -70,7 +71,7 @@ CREATE TABLE IF NOT EXISTS ticket (
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS administrator (
   id_administrator INT NOT NULL,
-  id_google VARCHAR(100) NULL,
+  id_google VARCHAR(100) NOT NULL,
   PRIMARY KEY (id_administrator));
 
 
@@ -99,10 +100,24 @@ INSERT INTO db_info (cd_parameter,tx_parameter) VALUES ('VERSION','0.0.1');
 -- -----------------------------------------------------
 INSERT INTO administrator (id_google) VALUES ('107407436085247891239');
 
-
 -- -----------------------------------------------------
--- Set available team types
+-- Set available role types
 -- -----------------------------------------------------
 INSERT INTO role (cd_role) VALUES ('ADMIN');
 INSERT INTO role (cd_role) VALUES ('USER');
 INSERT INTO role (cd_role) VALUES ('SERVICE');
+
+-- -----------------------------------------------------
+-- Set service account
+-- -----------------------------------------------------
+INSERT INTO user (
+  nm_user,
+  id_role,
+  tx_phone_number )
+SELECT DISTINCT 
+  'QQ Service',
+  id_role,
+  '0000000000'
+FROM role
+WHERE cd_role='SERVICE'
+  

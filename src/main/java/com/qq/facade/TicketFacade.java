@@ -1,6 +1,7 @@
 package com.qq.facade;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,7 @@ public class TicketFacade extends ModelFacade
         Ticket ticket = new Ticket();
         ticket.setQueueId( queue.getQueueId() + "" );
         ticket.setUserId( user.getUserId() + "" );
+        ticket.setLastUpdated( new Timestamp( System.currentTimeMillis() ) );
 
         myTicketDao.create( ticket );
         return ticket;
@@ -61,20 +63,21 @@ public class TicketFacade extends ModelFacade
         myTicketDao.deleteById( id );
     }
 
-    public Ticket getNextTicketForQueue( String queueId ) throws SQLException
+    public List<Ticket> getOrderedTicketsForQueue( String queueId ) throws SQLException
     {
         List<Ticket> tickets = getTicketsForQueue( queueId );
 
-        if ( tickets.size() > 0 )
-        {
-            tickets.sort( ( ticket0, ticket1 ) -> {
-                return ticket0.getLastUpdated()
-                    .compareTo( ticket1.getLastUpdated() );
-            } );
+        tickets.sort( ( ticket0, ticket1 ) -> {
+            return ticket0.getLastUpdated().compareTo( ticket1.getLastUpdated() );
+        } );
 
-            return tickets.get( 0 );
-        }
-        return null;
+        return tickets;
+    }
+
+    public Ticket getNextTicketForQueue( String queueId ) throws SQLException
+    {
+        List<Ticket> tickets = getOrderedTicketsForQueue( queueId );
+        return tickets.isEmpty() ? null : tickets.get( 0 );
     }
 
     public void updateTicket( Ticket ticket ) throws SQLException

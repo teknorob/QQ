@@ -8,6 +8,7 @@ public class QQConfig implements QQModel
     private String googleClientId;
     private String httpProxyHost;
     private String httpProxyPort;
+    private String serviceAccountPassword;
     
     public QQConfig()
     {
@@ -42,6 +43,16 @@ public class QQConfig implements QQModel
     public void setHttpProxyPort( String httpProxyPort )
     {
         this.httpProxyPort = httpProxyPort;
+    }
+
+    public String getServiceAccountPassword()
+    {
+        return serviceAccountPassword;
+    }
+
+    public void setServiceAccountPassword( String serviceAccountPassword )
+    {
+        this.serviceAccountPassword = serviceAccountPassword;
     }
 
 }

@@ -83,9 +83,31 @@ public class UserFacade extends ModelFacade
         return users.get( 0 );
     }
 
+    public User getServiceUser() throws SQLException
+    {
+        Map<String, Object> fieldValues = new HashMap<>();
+        fieldValues.put( "cd_role", RolesConstants.SERVICE );
+        List<User> users = myUserDao.queryForFieldValues( fieldValues );
+        if ( users.size() != 1 )
+        {
+            return null;
+        }
+        return users.get( 0 );
+    }
+
     public boolean isUserAdmin( User user ) throws SQLException
     {
-        String[] adminCodes = { RolesConstants.ADMIN };
+        return isUserAccountType( user, RolesConstants.ADMIN );
+    }
+
+    public boolean isUserServiceAccount( User user ) throws SQLException
+    {
+        return isUserAccountType( user, RolesConstants.SERVICE );
+    }
+
+    private boolean isUserAccountType( User user,
+                                       String... adminCodes ) throws SQLException
+    {
         for ( String adminCode : adminCodes )
         {
             if ( new RoleFacade( getConnectionSource() ).getRoleFromCode( adminCode )

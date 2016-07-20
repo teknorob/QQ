@@ -22,6 +22,25 @@ public class SessionUtils
         return false;
     }
 
+    public static boolean isServiceSession( Request request,
+                                            ConnectionSource connectionSource ) throws SQLException
+    {
+        User user = (User)request.session().attribute( "user" );
+        if ( user != null )
+        {
+            return ( new UserFacade( connectionSource )
+                .isUserServiceAccount( user ) );
+        }
+        return false;
+    }
+
+    public static boolean isUser( Request request,
+                                  ConnectionSource connectionSource ) throws SQLException
+    {
+        return isLoggedIn( request )
+                && !isServiceSession( request, connectionSource );
+    }
+
     public static boolean isLoggedIn( Request request ) throws SQLException
     {
         return (User)request.session().attribute( "user" ) != null;

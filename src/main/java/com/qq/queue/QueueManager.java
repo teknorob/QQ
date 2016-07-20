@@ -9,17 +9,38 @@ import com.qq.model.Queue;
 
 public class QueueManager
 {
-    public static Map<String, Thread> queueRunnables = new HashMap<>();
-    
-    public static void buildNewQueueRunnable(Queue queue, ConnectionSource connectionSource) throws SQLException
+    public Map<String, QueueRunnable> queueRunnables = new HashMap<>();
+
+    public void buildNewQueueRunnable( Queue queue,
+                                       ConnectionSource connectionSource ) throws SQLException
     {
+        if ( queueRunnables.get( queue.getQueueId() ) != null )
+        {
+            queueRunnables.get( queue.getQueueId() ).interrupt();
+        }
         QueueRunnable queueRunnable = new QueueRunnable( queue, connectionSource );
-        Thread queueThread = new Thread(queueRunnable);
-        queueRunnables.put( queue.getQueueId() + "", queueThread );
+        queueRunnables.put( queue.getQueueId() + "", queueRunnable );
+        queueRunnable.start();
     }
-    
-    public static boolean isQueueRunning(Queue queue)
+
+    public boolean isQueueRunning( Queue queue )
     {
-        return queueRunnables.get( queue.getQueueId() + "" ).isAlive();
+        return isQueueRunning( queue.getQueueId() + "" );
     }
+
+    public boolean isQueueRunning( String queueId )
+    {
+        return queueRunnables.get( queueId ).isAlive();
+    }
+
+    public void acceptNotification( String queueId )
+    {
+        if ( queueRunnables.get( queueId ).isAlive() )
+        {
+            QueueRunnable queueRunnable = queueRunnables.get( queueId );
+            queueRunnable.setAcceptedNotification();
+            queueRunnable.notify();
+        }
+    }
+
 }

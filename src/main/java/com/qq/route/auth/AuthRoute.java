@@ -88,6 +88,21 @@ public class AuthRoute extends RegistrableRoute
             Map<String, Object> page = getNewPageModel( request );
             return page;
         }, getJsonTransformer() );
+        
+        post( "/serviceLogin", ( request, response ) -> {
+            String password = getJsonTransformer().stringToMap( request.body() )
+                .get( "password" );
+            
+            if(qqConfig.getServiceAccountPassword().equals( password ))
+            {
+                UserFacade userFacade = new UserFacade( getConnectionSource() );
+                User user = userFacade.getServiceUser();
+                request.session( true ).attribute( "user", user );
+            }
+
+            Map<String, Object> page = getNewPageModel( request );
+            return page;
+        }, getJsonTransformer() );
 
         get( "/logout", ( request, response ) -> {
             request.session( true ).attribute( "user", null );

@@ -39,7 +39,7 @@ public class TicketsRestRoute extends RegistrableRoute
                 String queueId = request.queryParams( "queueId" );
 
                 final List<Ticket> ticket = ticketsFacade
-                    .getTicketsForQueue( queueId );
+                    .getOrderedTicketsForQueue( queueId );
                 page.put( "tickets", ticket );
             }
             catch ( Exception e )
@@ -69,7 +69,7 @@ public class TicketsRestRoute extends RegistrableRoute
                     new SimpleDateFormat( "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'" ) )
                 .readValue( request.body(), Queue.class );
 
-            if ( SessionUtils.isLoggedIn( request ) )
+            if ( SessionUtils.isUser( request, getConnectionSource() ) )
             {
                 QueueFacade queueFacade = new QueueFacade( getConnectionSource() );
                 queue = queueFacade
