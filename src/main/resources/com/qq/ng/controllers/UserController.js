@@ -25,7 +25,7 @@ QQApp.controller('userController', function($scope, $http, $rootScope, userServi
             $rootScope.$broadcast('userUpdated');
         });
     });
-
+    
     $scope.updateUser = function(response) {
         $scope.user = response.user;
         $scope.setRoleCodeOnUser($scope.user);
@@ -42,5 +42,10 @@ QQApp.controller('userController', function($scope, $http, $rootScope, userServi
         }
     };
     
+    $scope.$on('userUpdated', function(event, args) {
+        $http.get("/user", httpConfig).success(function(response) {
+            $scope.updateUser(response);
+        });
+    });
     
 });

@@ -12,9 +12,9 @@ var QQApp = angular.module("QQApp",[
          templateUrl: 'pages/queues.html',
          controller: 'queuesController'
      })
-     .when('/serviceLogin', {
-         templateUrl: 'pages/serviceLogin.html',
-         controller: 'serviceLoginController'
+     .when('/service', {
+         templateUrl: 'pages/service.html',
+         controller: 'serviceController'
      })
      .otherwise(
      {

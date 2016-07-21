@@ -85,8 +85,11 @@ public class UserFacade extends ModelFacade
 
     public User getServiceUser() throws SQLException
     {
+        Role role = new RoleFacade( getConnectionSource() ).getRoleFromCode( RolesConstants.SERVICE );
+        
         Map<String, Object> fieldValues = new HashMap<>();
-        fieldValues.put( "cd_role", RolesConstants.SERVICE );
+        fieldValues.put( "id_role", role.getRoleId() );
+        
         List<User> users = myUserDao.queryForFieldValues( fieldValues );
         if ( users.size() != 1 )
         {

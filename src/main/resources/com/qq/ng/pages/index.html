@@ -32,7 +32,7 @@
     <script src="../app/QQApp.js"></script>
     <script src="../controllers/UserController.js"></script>
     <script src="../controllers/QueuesController.js"></script>
-    <script src="../controllers/ServiceLoginController.js"></script>
+    <script src="../controllers/ServiceController.js"></script>
     <script src="../services/UserService.js"></script>
     <script src="js/google-plus-signin.js"></script>
     
@@ -46,7 +46,7 @@
       </div>
       <div ng-hide="user == null">
             <span title="{{user.roleCode}}">Signed in as {{user.userName}}</span>
-            <img src="{{user.avatarURL}}" height="40" width="40" alt=""/>
+            <img ng-show="user.avatarURL" src="{{user.avatarURL}}" height="40" width="40" alt=""/>
             <a ng-click="signout();">Sign out?</a>
       </div>
         <div class="twelve columns">

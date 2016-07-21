@@ -23,7 +23,17 @@ public class InteractionRoute extends RegistrableRoute
 
             if ( SessionUtils.isServiceSession( request, getConnectionSource() ) )
             {
-                
+                //Tell the queue manager that the notification was accepted for the given queueId
+            }
+            return page;
+        }, getJsonTransformer() );
+        
+        post( "/continueQueue", "application/json", ( request, response ) -> {
+            Map<String, Object> page = getNewPageModel( request );
+
+            if ( SessionUtils.isServiceSession( request, getConnectionSource() ) )
+            {
+                //Tell the queue manager that the queue can now commence for the given queueId
             }
             return page;
         }, getJsonTransformer() );
