@@ -1,8 +1,25 @@
-<div ng-controller='userController'>
-<form ng-submit="submitServiceLoginForm()" ng-hide="user.roleCode">
+<div ng-controller='userController' ng-hide="user">
+<form ng-submit="submitServiceLoginForm()" >
     <label>Service Account Password:</label>
     <input type="password" name="password" ng-model="login.password" placeholder="enter password..."/>
     
     <input type="submit" id="submit" value="Submit" />
 </form>
+</div>
+<div ng-hide="showCreateForm">
+<h1>Queues</h1>
+<table ng-show="user">
+<tr ng-repeat="queue in queues">
+    <td>
+    <label>
+        <form name="queueForm">
+        <input type="hidden" name="queue" ng-model="queue"/>
+        <div>{{queue.queueName}}</div>
+        </form>
+    </label></td>
+    <td ng-repeat="ticket in queue.tickets">
+        {{ticket.userId}}
+    </td>
+</tr>
+</table>
 </div>

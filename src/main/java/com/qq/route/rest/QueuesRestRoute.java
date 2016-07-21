@@ -3,6 +3,7 @@ package com.qq.route.rest;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.webSocket;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -64,5 +65,6 @@ public class QueuesRestRoute extends RegistrableRoute
             page.put( "queues", queue );
             return page;
         }, getJsonTransformer() );
+        
     }
 }

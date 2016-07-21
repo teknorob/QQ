@@ -9,10 +9,16 @@ import com.qq.model.Queue;
 
 public class QueueManager
 {
-    public Map<String, QueueRunnable> queueRunnables = new HashMap<>();
+    private Map<String, QueueRunnable> queueRunnables = new HashMap<>();
 
-    public void buildNewQueueRunnable( Queue queue,
-                                       ConnectionSource connectionSource ) throws SQLException
+    private ConnectionSource connectionSource;
+
+    public QueueManager( ConnectionSource connectionSource )
+    {
+        this.connectionSource = connectionSource;
+    }
+
+    public void buildNewQueueRunnable( Queue queue ) throws SQLException
     {
         if ( queueRunnables.get( queue.getQueueId() ) != null )
         {
