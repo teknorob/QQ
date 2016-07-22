@@ -4,8 +4,10 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import com.j256.ormlite.support.ConnectionSource;
+import com.qq.constants.QueueStateConstants;
 import com.qq.facade.QueueFacade;
 import com.qq.facade.TicketFacade;
 import com.qq.facade.UserFacade;
@@ -14,7 +16,7 @@ import com.qq.model.Ticket;
 import com.qq.model.User;
 import com.qq.util.LoggerUtil;
 
-public class QueueRunnable extends Thread
+public class QueueRunnable extends Observable implements Runnable
 {
     Queue queue;
 
@@ -57,6 +59,10 @@ public class QueueRunnable extends Thread
                 }
                 headUser = userFacade.getUserById( ticket.getUserId() );
 
+                // Notify observers that we're waiting for acceptance of a notification
+                notifyObservers(
+                    new QueueState( ticket, QueueStateConstants.WAITING, false ) );
+                
                 // Wait for notification from queue manager or waitTime
                 this.wait( waitTime );
 
@@ -64,17 +70,25 @@ public class QueueRunnable extends Thread
                 {
                     LoggerUtil.getLogger()
                         .info( headUser.getUserName() + " accepted notification" );
+                    // Notify observers of acknowledgement of acceptance
+                    notifyObservers( new QueueState( ticket,
+                        QueueStateConstants.ACCEPTED, false ) );
+                    this.wait();
+                    ticketFacade.deleteTicketById( ticket.getTicketId() + "" );
                 }
                 else
                 {
                     if ( offendingUsers.contains( headUser ) )
                     {
+                        // Remove the re-offender
                         offendingUsers.remove( headUser );
+                        ticketFacade.deleteTicketById( ticket.getTicketId() + "" );
                         LoggerUtil.getLogger().info( headUser.getUserName()
                                 + " did not accept notification and was removed from queue" );
                     }
                     else
                     {
+                        // Mark them as an offender
                         LoggerUtil.getLogger().info( headUser.getUserName()
                                 + " did not accept notification and was requeued" );
                         offendingUsers.add( headUser );
@@ -83,8 +97,10 @@ public class QueueRunnable extends Thread
                         ticketFacade.updateTicket( ticket );
                     }
                 }
-
-                ticketFacade.deleteTicketById( ticket.getTicketId() + "" );
+                
+                // Notify observers that the tickets have updated
+                notifyObservers(
+                    new QueueState( null, QueueStateConstants.RUNNING, true ) );
             }
         }
         catch ( SQLException | InterruptedException e )

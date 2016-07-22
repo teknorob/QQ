@@ -3,18 +3,21 @@ package com.qq.route.service;
 import static spark.Spark.post;
 import static spark.Spark.webSocket;
 
+import java.io.IOException;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 
+import org.eclipse.jetty.websocket.api.Session;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.RegistrableRoute;
+import com.qq.model.Ticket;
 import com.qq.queue.QueueManager;
 import com.qq.util.SessionUtils;
-
-import spark.Session;
 
 public class InteractionRoute extends RegistrableRoute
 {
@@ -36,6 +39,7 @@ public class InteractionRoute extends RegistrableRoute
             {
                 // Tell the queue manager that the notification was accepted for
                 // the given queueId
+                queueManager.acceptNotification("QUEUEIDGOESHERE");
             }
             return page;
         }, getJsonTransformer() );
@@ -48,6 +52,7 @@ public class InteractionRoute extends RegistrableRoute
                 // Tell the queue manager that the queue can skip to the next
                 // ticket for
                 // the given queueId
+                queueManager.declineNotification("QUEUEIDGOESHERE");
             }
             return page;
         }, getJsonTransformer() );
@@ -59,6 +64,7 @@ public class InteractionRoute extends RegistrableRoute
             {
                 // Tell the queue manager that the queue can now commence for
                 // the given queueId
+                queueManager.notifyQueue( "QUEUEIDGOESHERE" );
             }
             return page;
         }, getJsonTransformer() );
@@ -67,19 +73,36 @@ public class InteractionRoute extends RegistrableRoute
     }
 
     @OnWebSocketConnect
-    public void onConnect(Session user) throws Exception {
-        //Add an observer to the message manager and add  that observer to the queues
-        //OnUpdate, send an update through the session.getRemote
+    public void onConnect( Session user ) throws Exception
+    {
+        queueManager.addObserverToQueues( user, new Observer()
+        {
+            public void update( Observable obj, Object arg )
+            {
+                try
+                {
+                    user.getRemote()
+                        .sendString( getJsonTransformer().render( arg ) );
+                }
+                catch ( IOException e )
+                {
+                    throw new RuntimeException( e );
+                }
+            }
+        } );
+
     }
-    
+
     @OnWebSocketClose
-    public void onClose(Session user, int statusCode, String reason) {
-        //Do nothing
+    public void onClose( Session user, int statusCode, String reason )
+    {
+        queueManager.removeObserverFromQueues( user );
     }
-    
+
     @OnWebSocketMessage
-    public void onMessage(Session user, String message) {
-        //Do nothing
+    public void onMessage( Session user, String message )
+    {
+        // Do nothing
     }
 
 }
