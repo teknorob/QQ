@@ -1,6 +1,7 @@
 package com.qq;
 
-import static spark.Spark.webSocket;
+
+import static spark.Spark.init;
 
 import java.io.IOException;
 import java.net.URI;
@@ -20,7 +21,6 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.management.RouteManager;
 import com.qq.persist.init.DatabaseInitialiser;
 import com.qq.queue.QueueManager;
-import com.qq.route.service.InteractionRoute;
 import com.qq.util.LoggerUtil;
 
 public class Main
@@ -122,6 +122,6 @@ public class Main
         QueueManager.init( connectionSource );
         RouteManager.insertWebsockets( connectionSource );
         RouteManager.insertRoutes( connectionSource );
-
+        init();
     }
 }

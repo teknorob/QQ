@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.CRUDRoute;
 import com.qq.core.route.RegistrableRoute;
-import com.qq.core.route.RegistrableWebsocket;
+import com.qq.core.websocket.RegistrableWebsocket;
 import com.qq.route.StaticContentRoute;
 import com.qq.util.LoggerUtil;
 

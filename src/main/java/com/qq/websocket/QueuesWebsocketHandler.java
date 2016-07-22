@@ -13,9 +13,9 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketError;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 import org.eclipse.jetty.websocket.api.annotations.WebSocket;
 
-import com.j256.ormlite.support.ConnectionSource;
-import com.qq.core.route.RegistrableWebsocket;
+import com.qq.core.websocket.RegistrableWebsocket;
 import com.qq.queue.QueueManager;
+import com.qq.util.LoggerUtil;
 
 @WebSocket
 public class QueuesWebsocketHandler extends RegistrableWebsocket
@@ -31,6 +31,7 @@ public class QueuesWebsocketHandler extends RegistrableWebsocket
     @OnWebSocketConnect
     public void onConnect( Session user ) throws Exception
     {
+        LoggerUtil.getLogger().info( "TADAAAAAA!!" );
         queueManager.addObserverToQueues( user, new Observer()
         {
             public void update( Observable obj, Object arg )
@@ -52,6 +53,7 @@ public class QueuesWebsocketHandler extends RegistrableWebsocket
     @OnWebSocketError
     public void onClose( Session user, int statusCode, String reason )
     {
+        LoggerUtil.getLogger().info( "AWWWW!!" );
         queueManager.removeObserverFromQueues( user );
     }
 
