@@ -11,12 +11,39 @@ import org.slf4j.Logger;
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.CRUDRoute;
 import com.qq.core.route.RegistrableRoute;
+import com.qq.core.route.RegistrableWebsocket;
 import com.qq.route.StaticContentRoute;
 import com.qq.util.LoggerUtil;
 
 public class RouteManager
 {
 
+    
+    public static void insertWebsockets( ConnectionSource connectionSource ) throws InstantiationException,
+    IllegalAccessException
+    {
+        Logger logger = LoggerUtil.getLogger();
+        
+        Reflections reflections = new Reflections( "com.qq.websocket" );
+        // Register the Websocket Routes
+        try
+        {
+            Set<Class<? extends RegistrableWebsocket>> allClasses = reflections
+                .getSubTypesOf( RegistrableWebsocket.class );
+
+            for ( Class<? extends RegistrableWebsocket> clazz : allClasses )
+            {
+                clazz.getConstructor()
+                    .newInstance().register();
+                logger.info( "Websocket Registered: " + clazz.getName() );
+            }
+        }
+        catch ( Exception e )
+        {
+            throw new RuntimeException( "Couldn't register all websockets.", e );
+        }
+    }
+    
     public static void insertRoutes( ConnectionSource connectionSource ) throws InstantiationException,
                                                                          IllegalAccessException
     {

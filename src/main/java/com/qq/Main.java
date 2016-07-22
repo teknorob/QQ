@@ -1,5 +1,7 @@
 package com.qq;
 
+import static spark.Spark.webSocket;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,10 +14,13 @@ import java.util.Map;
 import org.h2.jdbcx.JdbcConnectionPool;
 import org.h2.tools.Server;
 import org.slf4j.Logger;
+
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.management.RouteManager;
 import com.qq.persist.init.DatabaseInitialiser;
+import com.qq.queue.QueueManager;
+import com.qq.route.service.InteractionRoute;
 import com.qq.util.LoggerUtil;
 
 public class Main
@@ -113,7 +118,9 @@ public class Main
         {
             throw new RuntimeException( e );
         }
-
+        
+        QueueManager.init( connectionSource );
+        RouteManager.insertWebsockets( connectionSource );
         RouteManager.insertRoutes( connectionSource );
 
     }

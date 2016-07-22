@@ -4,6 +4,7 @@ import static spark.Spark.post;
 import static spark.Spark.webSocket;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
@@ -23,10 +24,12 @@ public class InteractionRoute extends RegistrableRoute
 {
     QueueManager queueManager;
 
-    public InteractionRoute( ConnectionSource connectionSource )
+    public InteractionRoute( ConnectionSource connectionSource ) 
+    throws SQLException
     {
         super( connectionSource );
-        queueManager = new QueueManager( getConnectionSource() );
+        queueManager = QueueManager.getInstance( );
+//        queueManager.startAllQueues();
     }
 
     @Override
@@ -68,41 +71,6 @@ public class InteractionRoute extends RegistrableRoute
             }
             return page;
         }, getJsonTransformer() );
-
-        webSocket( "/queues", this.getClass() );
-    }
-
-    @OnWebSocketConnect
-    public void onConnect( Session user ) throws Exception
-    {
-        queueManager.addObserverToQueues( user, new Observer()
-        {
-            public void update( Observable obj, Object arg )
-            {
-                try
-                {
-                    user.getRemote()
-                        .sendString( getJsonTransformer().render( arg ) );
-                }
-                catch ( IOException e )
-                {
-                    throw new RuntimeException( e );
-                }
-            }
-        } );
-
-    }
-
-    @OnWebSocketClose
-    public void onClose( Session user, int statusCode, String reason )
-    {
-        queueManager.removeObserverFromQueues( user );
-    }
-
-    @OnWebSocketMessage
-    public void onMessage( Session user, String message )
-    {
-        // Do nothing
     }
 
 }
