@@ -19,9 +19,9 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.gson.Gson;
 import com.j256.ormlite.support.ConnectionSource;
+import com.qq.config.QQConfig;
 import com.qq.core.route.RegistrableRoute;
 import com.qq.facade.UserFacade;
-import com.qq.model.QQConfig;
 import com.qq.model.User;
 import com.qq.util.LoggerUtil;
 
@@ -29,7 +29,7 @@ public class AuthRoute extends RegistrableRoute
 {
     GoogleIdTokenVerifier verifier;
 
-    QQConfig qqConfig;
+    QQConfig qqConfig = QQConfig.build();
 
     Logger logger = LoggerUtil.getLogger();
 
@@ -37,10 +37,10 @@ public class AuthRoute extends RegistrableRoute
     {
         super( connectionSource );
 
-        qqConfig = new Gson().fromJson(
-            new InputStreamReader( AuthRoute.class
-                .getResourceAsStream( "/com/qq/config/qq_config.json" ) ),
-            QQConfig.class );
+//        qqConfig = new Gson().fromJson(
+//            new InputStreamReader( AuthRoute.class
+//                .getResourceAsStream( "/com/qq/config/qq_config.json" ) ),
+//            QQConfig.class );
 
         NetHttpTransport transport;
         if( !StringUtils.isEmpty( qqConfig.getHttpProxyHost() ) )

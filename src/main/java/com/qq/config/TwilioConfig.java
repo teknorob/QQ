@@ -1,15 +1,21 @@
-package com.qq.model;
+package com.qq.config;
 
+import java.io.InputStreamReader;
+
+import com.google.gson.Gson;
 import com.qq.core.model.QQModel;
+import com.qq.facade.SmsFacade;
 
 public class TwilioConfig implements QQModel
 {
-    
+
     private String accountSid;
+
     private String authToken;
+
     private String fromNumber;
-    
-    public TwilioConfig()
+
+    private TwilioConfig()
     {
 
     }
@@ -43,5 +49,13 @@ public class TwilioConfig implements QQModel
     {
         this.fromNumber = fromNumber;
     }
-    
+
+    public static TwilioConfig build()
+    {
+        return new Gson().fromJson(
+            new InputStreamReader( TwilioConfig.class
+                .getResourceAsStream( "/com/qq/config/twilio_config.json" ) ),
+            TwilioConfig.class );
+    }
+
 }

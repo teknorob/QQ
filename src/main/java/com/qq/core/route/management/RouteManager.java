@@ -18,12 +18,12 @@ import com.qq.util.LoggerUtil;
 public class RouteManager
 {
 
-    
+    private static Logger logger = LoggerUtil.getLogger();
+
     public static void insertWebsockets( ConnectionSource connectionSource ) throws InstantiationException,
-    IllegalAccessException
+                                                                             IllegalAccessException
     {
-        Logger logger = LoggerUtil.getLogger();
-        
+
         Reflections reflections = new Reflections( "com.qq.websocket" );
         // Register the Websocket Routes
         try
@@ -33,8 +33,7 @@ public class RouteManager
 
             for ( Class<? extends RegistrableWebsocket> clazz : allClasses )
             {
-                clazz.getConstructor()
-                    .newInstance().register();
+                clazz.getConstructor().newInstance().register();
                 logger.info( "Websocket Registered: " + clazz.getName() );
             }
         }
@@ -42,12 +41,12 @@ public class RouteManager
         {
             throw new RuntimeException( "Couldn't register all websockets.", e );
         }
+        spark.Spark.init();
     }
-    
+
     public static void insertRoutes( ConnectionSource connectionSource ) throws InstantiationException,
                                                                          IllegalAccessException
     {
-        Logger logger = LoggerUtil.getLogger();
         before( ( req, res ) -> {
             res.raw().setCharacterEncoding( StandardCharsets.UTF_8.toString() );
             if ( req.pathInfo().endsWith( ".html" ) )
@@ -93,18 +92,21 @@ public class RouteManager
                 logger.info( "Route Registered: " + clazz.getName() );
             }
 
-            logger.info(
-                "Registering Static Content Route (this must be done last)." );
-            new StaticContentRoute( connectionSource ).register();
-            logger.info( "Route Registered: " + StaticContentRoute.class.getName() );
-
-            logger.info( "All Routes Registered." );
-
         }
         catch ( Exception e )
         {
             throw new RuntimeException( "Couldn't register all routes.", e );
         }
+
+    }
+
+    public static void registerStaticContent( ConnectionSource connectionSource )
+    {
+        logger.info( "Registering Static Content Route (this must be done last)." );
+        new StaticContentRoute( connectionSource ).register();
+        logger.info( "Route Registered: " + StaticContentRoute.class.getName() );
+
+        logger.info( "All Routes Registered." );
 
     }
 }

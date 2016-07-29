@@ -1,8 +1,6 @@
 package com.qq;
 
 
-import static spark.Spark.init;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -22,6 +20,8 @@ import com.qq.core.route.management.RouteManager;
 import com.qq.persist.init.DatabaseInitialiser;
 import com.qq.queue.QueueManager;
 import com.qq.util.LoggerUtil;
+
+import spark.route.RouteOverview;
 
 public class Main
 {
@@ -119,9 +119,11 @@ public class Main
             throw new RuntimeException( e );
         }
         
+
         QueueManager.init( connectionSource );
         RouteManager.insertWebsockets( connectionSource );
         RouteManager.insertRoutes( connectionSource );
-        init();
+        RouteOverview.enableRouteOverview("/routes");
+        RouteManager.registerStaticContent( connectionSource );
     }
 }

@@ -2,5 +2,6 @@
     "googleClientId": "The google client Id",
     "httpProxyHost": "address",
     "httpProxyPort": "portNumber",
-    "serviceAccountPassword": "makeUpAServicePasswordHere"
+    "serviceAccountPassword": "makeUpAServicePasswordHere",
+    "debugMode": "false"
 }

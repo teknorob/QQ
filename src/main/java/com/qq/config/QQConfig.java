@@ -1,16 +1,23 @@
-package com.qq.model;
+package com.qq.config;
 
+import java.io.InputStreamReader;
+
+import com.google.gson.Gson;
 import com.qq.core.model.QQModel;
 
 public class QQConfig implements QQModel
 {
-    
     private String googleClientId;
+
     private String httpProxyHost;
+
     private String httpProxyPort;
+
     private String serviceAccountPassword;
     
-    public QQConfig()
+    private boolean debugMode;
+
+    private QQConfig()
     {
 
     }
@@ -53,6 +60,24 @@ public class QQConfig implements QQModel
     public void setServiceAccountPassword( String serviceAccountPassword )
     {
         this.serviceAccountPassword = serviceAccountPassword;
+    }
+
+    public boolean isDebugMode()
+    {
+        return debugMode;
+    }
+
+    public void setDebugMode( boolean debugMode )
+    {
+        this.debugMode = debugMode;
+    }
+
+    public static final QQConfig build()
+    {
+        return new Gson().fromJson(
+            new InputStreamReader( QQConfig.class
+                .getResourceAsStream( "/com/qq/config/qq_config.json" ) ),
+            QQConfig.class );
     }
 
 }

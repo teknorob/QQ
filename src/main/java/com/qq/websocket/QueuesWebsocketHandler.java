@@ -20,13 +20,7 @@ import com.qq.util.LoggerUtil;
 @WebSocket
 public class QueuesWebsocketHandler extends RegistrableWebsocket
 {
-    QueueManager queueManager;
-
-    public QueuesWebsocketHandler()
-    {
-        super();
-        queueManager = QueueManager.getInstance();
-    }
+    QueueManager queueManager = QueueManager.getInstance();
 
     @OnWebSocketConnect
     public void onConnect( Session user ) throws Exception

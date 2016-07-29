@@ -16,10 +16,10 @@ import org.glassfish.jersey.client.ClientProperties;
 
 import com.google.gson.Gson;
 import com.j256.ormlite.support.ConnectionSource;
+import com.qq.config.QQConfig;
+import com.qq.config.TwilioConfig;
 import com.qq.core.persist.facade.ModelFacade;
-import com.qq.model.QQConfig;
 import com.qq.model.Sms;
-import com.qq.model.TwilioConfig;
 import com.qq.route.auth.AuthRoute;
 
 public class SmsFacade extends ModelFacade
@@ -31,42 +31,23 @@ public class SmsFacade extends ModelFacade
 
     public String sendSms( Sms sms ) throws IOException
     {
-        TwilioConfig twilioConfig = new Gson().fromJson(
-            new InputStreamReader( SmsFacade.class
-                .getResourceAsStream( "/com/qq/config/twilio_config.json" ) ),
-            TwilioConfig.class );
-        QQConfig qqConfig = new Gson().fromJson(
-            new InputStreamReader( AuthRoute.class
-                .getResourceAsStream( "/com/qq/config/qq_config.json" ) ),
-            QQConfig.class );
+        TwilioConfig twilioConfig = TwilioConfig.build();
+        QQConfig qqConfig = QQConfig.build();
 
-       
-        System.getProperties().put("http.proxyHost", "localhost");
-        System.getProperties().put("http.proxyPort", "3128");
-        
+        System.getProperties().put( "http.proxyHost", qqConfig.getHttpProxyHost() );
+        System.getProperties().put( "http.proxyPort", qqConfig.getHttpProxyPort() );
+
         ClientConfig clientConfig = new ClientConfig();
-        clientConfig.property(ClientProperties.PROXY_URI, 
-            qqConfig.getHttpProxyHost() + ":" + qqConfig.getHttpProxyPort());
-        
-        Client client = ClientBuilder.newClient(clientConfig);
-//        if ( qqConfig.getHttpProxyHost() != null
-//                && qqConfig.getHttpProxyPort() != null )
-//        {
-//            client.property( ClientProperties.PROXY_URI,
-//                qqConfig.getHttpProxyHost() + ":" + qqConfig.getHttpProxyPort() );
-//        }
+        clientConfig.property( ClientProperties.PROXY_URI,
+            qqConfig.getHttpProxyHost() + ":" + qqConfig.getHttpProxyPort() );
 
-        
+        Client client = ClientBuilder.newClient( clientConfig );
+
         client.getConfiguration().getProperty( ClientProperties.PROXY_URI );
-        
-        WebTarget target = client.target( "https://www.google.com/"
-                + twilioConfig.getAccountSid() )
-                .path( "Messages" );
-        
-//        WebTarget target = client.target( "https://api.twilio.com/2010-04-01/Accounts/"
-//            + twilioConfig.getAccountSid() )
-//            .path( "Messages" );
-       
+
+        WebTarget target = client
+            .target( "https://www.google.com/" + twilioConfig.getAccountSid() )
+            .path( "Messages" );
 
         Form form = new Form();
         form.param( "To", "+61402264598" );
@@ -76,15 +57,6 @@ public class SmsFacade extends ModelFacade
         target.request( MediaType.APPLICATION_JSON_TYPE ).post(
             Entity.entity( form, MediaType.APPLICATION_FORM_URLENCODED_TYPE ) );
 
-//      Twilio.init( twilioConfig.getAccountSid(), twilioConfig.getAuthToken() );
-//
-//      Message message = new MessageCreator( twilioConfig.getAccountSid(),
-//          new PhoneNumber( sms.getToNumber() ), new PhoneNumber( twilioConfig.getFromNumber() ),
-//          sms.getBody() ).execute();
-//
-//      System.out.println( message.getSid() );
-//      return message.getSid();
-        
         return null;
     }
 
