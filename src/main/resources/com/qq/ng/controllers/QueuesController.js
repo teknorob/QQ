@@ -49,10 +49,17 @@ QQApp.controller('queuesController', function($scope, $http, userService) {
                     if(ticket.userId == user.userId){
                         queue.userTicket = ticket;
                     }
+                    $scope.updateTicketUser(ticket);
                 });
             }
         });
 	}
+	
+	$scope.updateTicketUser = function(ticket){
+        $http.get("/users/" + ticket.userId, httpConfig).success(function(response){
+            ticket.user = response.user;
+        });
+    }
 	
 	$scope.testSms = function()
 	{

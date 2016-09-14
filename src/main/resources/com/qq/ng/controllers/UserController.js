@@ -18,7 +18,7 @@ QQApp.controller('userController', function($scope, $http, $rootScope, userServi
 
     $scope.$on('event:google-plus-signin-success', function(event, authResult) {
         token = {
-            "tokenId" : authResult.hg.id_token
+            "tokenId" : authResult.Zi.id_token
         };
         $http.post("/login", token, httpConfig).success(function(response) {
             $scope.updateUser(response);
