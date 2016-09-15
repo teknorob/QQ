@@ -41,7 +41,7 @@ public class QueueRunnable extends Observable implements Runnable
     public void run()
     {
         User headUser;
-        List<User> offendingUsers = new ArrayList<User>();
+        // List<User> offendingUsers = new ArrayList<User>();
         long waitTime = queue.getTicketExpiryDuration() * 1000;
         try
         {
@@ -59,12 +59,16 @@ public class QueueRunnable extends Observable implements Runnable
                 }
                 headUser = userFacade.getUserById( ticket.getUserId() );
 
-                // Notify observers that we're waiting for acceptance of a notification
+                // Notify observers that we're waiting for acceptance of a
+                // notification
                 notifyObservers(
                     new QueueState( ticket, QueueStateConstants.WAITING, false ) );
-                
+
                 // Wait for notification from queue manager or waitTime
-                this.wait( waitTime );
+                synchronized ( this )
+                {
+                    wait( waitTime );
+                }
 
                 if ( acceptedNotification )
                 {
@@ -73,15 +77,21 @@ public class QueueRunnable extends Observable implements Runnable
                     // Notify observers of acknowledgement of acceptance
                     notifyObservers( new QueueState( ticket,
                         QueueStateConstants.ACCEPTED, false ) );
-                    this.wait();
+                    synchronized ( this )
+                    {
+                        wait();
+                    }
+
                     ticketFacade.deleteTicketById( ticket.getTicketId() + "" );
                 }
                 else
                 {
-                    if ( offendingUsers.contains( headUser ) )
+                    // They didn't accept the notification in time
+                    // if ( offendingUsers.contains( headUser ) )
+                    if ( ticket.isOffender() )
                     {
                         // Remove the re-offender
-                        offendingUsers.remove( headUser );
+                        // offendingUsers.remove( headUser );
                         ticketFacade.deleteTicketById( ticket.getTicketId() + "" );
                         LoggerUtil.getLogger().info( headUser.getUserName()
                                 + " did not accept notification and was removed from queue" );
@@ -91,13 +101,13 @@ public class QueueRunnable extends Observable implements Runnable
                         // Mark them as an offender
                         LoggerUtil.getLogger().info( headUser.getUserName()
                                 + " did not accept notification and was requeued" );
-                        offendingUsers.add( headUser );
+                        ticket.setOffender( true );
                         ticket.setLastUpdated(
                             new Timestamp( System.currentTimeMillis() ) );
                         ticketFacade.updateTicket( ticket );
                     }
                 }
-                
+
                 // Notify observers that the tickets have updated
                 notifyObservers(
                     new QueueState( null, QueueStateConstants.RUNNING, true ) );

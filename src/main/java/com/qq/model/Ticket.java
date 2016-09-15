@@ -21,6 +21,19 @@ public class Ticket
 
     @DatabaseField(columnName = "dt_last_updated")
     private Timestamp lastUpdated;
+    
+    @DatabaseField(columnName = "fl_offender")
+    private boolean offender = false;
+
+    public boolean isOffender()
+    {
+        return offender;
+    }
+
+    public void setOffender( boolean offender )
+    {
+        this.offender = offender;
+    }
 
     public int getTicketId()
     {

@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS ticket (
   id_queue INT NOT NULL,
   id_user INT NOT NULL,
   dt_last_updated TIMESTAMP NOT NULL,
+  fl_offender BOOLEAN NOT NULL,
   PRIMARY KEY (id_ticket),
   INDEX fk_ticket_queue1_idx (id_queue ASC),
   INDEX fk_ticket_user1_idx (id_user ASC),

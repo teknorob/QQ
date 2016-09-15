@@ -29,7 +29,7 @@ public class InteractionRoute extends RegistrableRoute
     {
         super( connectionSource );
         queueManager = QueueManager.getInstance( );
-//        queueManager.startAllQueues();
+        queueManager.startAllQueues();
     }
 
     @Override
