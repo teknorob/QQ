@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.ValidationException;
+
 import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
@@ -83,6 +85,25 @@ public class TicketFacade extends ModelFacade
     public void updateTicket( Ticket ticket ) throws SQLException
     {
         myTicketDao.update( ticket );
+    }
+
+    public Ticket getUserTicket( String queueId, String userId ) throws SQLException,
+                                                                 ValidationException
+    {
+        Map<String, Object> filterValues = new HashMap<>();
+        filterValues.put( "id_queue", queueId );
+        filterValues.put( "id_user", userId );
+
+        List<Ticket> tickets = myTicketDao.queryForFieldValues( filterValues );
+        if ( tickets.isEmpty() )
+            return null;
+
+        if ( tickets.size() > 1 )
+            throw new ValidationException(
+                "Only 1 ticket was expected for user " + userId + " in queue "
+                        + queueId + ". Found " + tickets.size() + " tickets." );
+
+        return tickets.get( 0 );
     }
 
 }

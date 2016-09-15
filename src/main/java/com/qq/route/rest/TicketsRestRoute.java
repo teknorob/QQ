@@ -17,6 +17,7 @@ import com.qq.facade.TicketFacade;
 import com.qq.model.Queue;
 import com.qq.model.Ticket;
 import com.qq.model.User;
+import com.qq.queue.QueueManager;
 import com.qq.util.SessionUtils;
 
 public class TicketsRestRoute extends RegistrableRoute
@@ -72,13 +73,24 @@ public class TicketsRestRoute extends RegistrableRoute
             if ( SessionUtils.isUser( request, getConnectionSource() ) )
             {
                 QueueFacade queueFacade = new QueueFacade( getConnectionSource() );
-                queue = queueFacade
-                    .getQueueById( Integer.toString( queue.getQueueId() ) );
+                queue = queueFacade.getQueueById( queue.getQueueId() + "" );
                 User user = SessionUtils.getCurrentUser( request );
 
                 TicketFacade ticketFacade = new TicketFacade(
                     getConnectionSource() );
-                page.put( "tickets", ticketFacade.createTicket( queue, user ) );
+                Ticket userTicket = ticketFacade
+                    .getUserTicket( queue.getQueueId() + "", user.getUserId() + "" );
+                if ( userTicket == null )
+                {
+                    userTicket = ticketFacade.createTicket( queue, user );
+                }
+                page.put( "tickets", userTicket );
+
+                QueueManager queueManager = QueueManager.getInstance();
+                if ( !queueManager.isQueueRunning( queue ) )
+                {
+                    queueManager.buildNewQueueRunnable( queue );
+                }
             }
             return page;
         }, getJsonTransformer() );

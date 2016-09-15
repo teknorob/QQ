@@ -27,9 +27,9 @@
         </form>
     </label></td>
     <td ng-repeat="ticket in queue.tickets">
-        {{ticket.user.userName}}
+        {{ticket.user.userName}} <img ng-show="ticket.offender" src="media/offender.gif"/>
     </td>
 </tr>
 </table>
 </div>
-<a ng-click="testSms();">Test Sms Service</a>
+<!-- <a ng-click="testSms();">Test Sms Service</a> -->
