@@ -41,3 +41,6 @@ test {
 
     
 mainClassName = "com.qq.Main"
+
+task stage(dependsOn: ['clean', 'build', 'bootRepackage'])
+stage.mustRunAfter('clean')
