@@ -42,5 +42,5 @@ test {
     
 mainClassName = "com.qq.Main"
 
-task stage(dependsOn: ['clean', 'build', 'bootRepackage'])
+task stage(dependsOn: ['clean', 'build'])
 stage.mustRunAfter('clean')
