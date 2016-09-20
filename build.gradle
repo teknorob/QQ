@@ -29,8 +29,11 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.4'
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.7.4'
 	compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Draft-16'
-	compile 'com.google.api-client:google-api-client:1.19.1'
+	compile 'com.google.api-client:google-api-client:1.22.0'
+	compile 'com.google.apis:google-api-services-gmail:v1-rev48-1.22.0'
     compile 'com.google.http-client:google-http-client-gson:1.22.0'
+    compile 'com.google.oauth-client:google-oauth-client-jetty:1.22.0'
+    compile 'com.google.apis:google-api-services-gmail:v1-rev48-1.22.0'
     compile 'org.glassfish.jersey.core:jersey-client:2.23.1'
     testCompile 'org.testng:testng:6.9.10'
 }

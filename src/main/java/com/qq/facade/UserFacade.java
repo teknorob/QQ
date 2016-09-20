@@ -50,7 +50,7 @@ public class UserFacade extends ModelFacade
     }
 
     public User createNewUser( String userName, String googleId,
-                               String avatarURL ) throws SQLException
+                               String avatarURL, String email ) throws SQLException
     {
         RoleFacade roleFacade = new RoleFacade( getConnectionSource() );
         Role role = roleFacade.getRoleFromCode( RolesConstants.USER );
@@ -60,6 +60,7 @@ public class UserFacade extends ModelFacade
         user.setGoogleId( googleId );
         user.setRoleId( role.getRoleId() );
         user.setAvatarURL( avatarURL );
+        user.setEmail( email );
         myUserDao.create( user );
 
         setAdministrativeRoleOnExpectedGoogleId( user );

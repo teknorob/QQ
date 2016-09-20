@@ -4,7 +4,6 @@ import java.io.InputStreamReader;
 
 import com.google.gson.Gson;
 import com.qq.core.model.QQModel;
-import com.qq.facade.SmsFacade;
 
 public class TwilioConfig implements QQModel
 {

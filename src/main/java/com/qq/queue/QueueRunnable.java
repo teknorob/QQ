@@ -2,8 +2,6 @@ package com.qq.queue;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 
 import com.j256.ormlite.support.ConnectionSource;
@@ -59,6 +57,8 @@ public class QueueRunnable extends Observable implements Runnable
                 }
                 headUser = userFacade.getUserById( ticket.getUserId() );
 
+                TicketMaster.notifyUser(headUser, ticket, queue);
+                
                 // Notify observers that we're waiting for acceptance of a
                 // notification
                 notifyObservers(
