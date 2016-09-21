@@ -9,6 +9,7 @@ import com.j256.ormlite.dao.Dao;
 import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.constants.RolesConstants;
+import com.qq.constants.UserConstants;
 import com.qq.core.persist.facade.ModelFacade;
 import com.qq.model.Administrator;
 import com.qq.model.Role;
@@ -61,6 +62,7 @@ public class UserFacade extends ModelFacade
         user.setRoleId( role.getRoleId() );
         user.setAvatarURL( avatarURL );
         user.setEmail( email );
+        user.setNotificationType( UserConstants.NOTIFICATION_TYPE_EMAIL );
         myUserDao.create( user );
 
         setAdministrativeRoleOnExpectedGoogleId( user );

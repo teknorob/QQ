@@ -4,6 +4,7 @@ import javax.persistence.Column;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.qq.constants.UserConstants;
 
 @DatabaseTable(tableName = "user")
 public class User

@@ -11,6 +11,7 @@ import com.qq.model.Queue;
 import com.qq.model.Ticket;
 import com.qq.model.User;
 import com.qq.util.GmailServiceFactory;
+import com.qq.util.LoggerUtil;
 import com.qq.util.SendEmail;
 
 // This fat controller calls your tickets out
@@ -33,6 +34,7 @@ public class TicketMaster
         switch ( user.getNotificationType() )
         {
             case UserConstants.NOTIFICATION_TYPE_EMAIL:
+                LoggerUtil.getLogger().info( "Sending email to: " + user.getEmail() );
                 Gmail gmail = GmailServiceFactory.getInstance().getGmailService();
                 try
                 {
@@ -44,6 +46,7 @@ public class TicketMaster
                     throw new RuntimeException(
                             "Something done fuckedup during email notification.", e );
                 }
+                LoggerUtil.getLogger().info( "Email sent to: " + user.getEmail() );
                 break;
             default:
                 throw new RuntimeException(
