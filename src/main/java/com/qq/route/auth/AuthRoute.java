@@ -35,11 +35,6 @@ public class AuthRoute extends RegistrableRoute
     {
         super( connectionSource );
 
-        // qqConfig = new Gson().fromJson(
-        // new InputStreamReader( AuthRoute.class
-        // .getResourceAsStream( "/com/qq/config/qq_config.json" ) ),
-        // QQConfig.class );
-
         NetHttpTransport transport;
         if ( !StringUtils.isEmpty( qqConfig.getHttpProxyHost() ) )
         {
