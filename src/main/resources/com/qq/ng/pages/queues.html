@@ -27,7 +27,7 @@
         </form>
     </label></td>
     <td ng-repeat="ticket in queue.tickets">
-        {{ticket.user.userName}} <img ng-show="ticket.offender" src="media/offender.gif"/>
+        {{ticket.user.userName}} <img ng-show="ticket.offender" src="media/offender.png" style="width: 20px;" alt="Already missed one ticket call. Will not be requeued again."/>
     </td>
 </tr>
 </table>
