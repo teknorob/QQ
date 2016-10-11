@@ -3,8 +3,6 @@ package com.qq.route.rest;
 import static spark.Spark.delete;
 import static spark.Spark.get;
 import static spark.Spark.post;
-import static spark.Spark.webSocket;
-
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Map;

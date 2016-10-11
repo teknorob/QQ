@@ -22,6 +22,14 @@ public class SmsRestRoute extends RegistrableRoute
     public void register()
     {
         get( "/testSms", "application/json", ( request, response ) -> {
+            
+            //TODO Need to find a better sms service than twilio... 
+            if(true)
+            {
+                return getNewPageModel( request ); 
+            }
+            
+            
             Sms sms = new Sms();
             sms.setToNumber( "+61402264598" );
             sms.setBody(

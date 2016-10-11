@@ -12,8 +12,9 @@ repositories {
 }
 
 dependencies {
+    compile 'org.simplejavamail:simple-java-mail:4.1.1'
     compile 'org.slf4j:slf4j-simple:1.7.21'
-    compile 'com.sparkjava:spark-core:2.5'
+    compile 'com.sparkjava:spark-core:2.4'
     compile 'com.h2database:h2:1.4.190'
     compile 'commons-io:commons-io:2.4'
     compile 'org.apache.commons:commons-lang3:3.4'
@@ -29,8 +30,10 @@ dependencies {
 	compile 'com.fasterxml.jackson.core:jackson-annotations:2.7.4'
 	compile 'com.fasterxml.jackson.core:jackson-databind:2.7.4'
 	compile 'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Draft-16'
-	compile 'com.google.api-client:google-api-client:1.19.1'
+	compile 'com.google.api-client:google-api-client:1.22.0'
+	compile 'com.google.apis:google-api-services-gmail:v1-rev48-1.22.0'
     compile 'com.google.http-client:google-http-client-gson:1.22.0'
+    compile 'com.google.oauth-client:google-oauth-client-java6:1.22.0'
     compile 'org.glassfish.jersey.core:jersey-client:2.23.1'
     testCompile 'org.testng:testng:6.9.10'
 }
@@ -41,3 +44,6 @@ test {
 
     
 mainClassName = "com.qq.Main"
+
+task stage(dependsOn: ['clean', 'build'])
+stage.mustRunAfter('clean')

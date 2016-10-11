@@ -1,7 +1,6 @@
 package com.qq.facade;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 
 import javax.ws.rs.client.Client;
@@ -14,13 +13,11 @@ import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 
-import com.google.gson.Gson;
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.config.QQConfig;
 import com.qq.config.TwilioConfig;
 import com.qq.core.persist.facade.ModelFacade;
 import com.qq.model.Sms;
-import com.qq.route.auth.AuthRoute;
 
 public class SmsFacade extends ModelFacade
 {

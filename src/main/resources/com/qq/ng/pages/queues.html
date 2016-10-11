@@ -27,9 +27,9 @@
         </form>
     </label></td>
     <td ng-repeat="ticket in queue.tickets">
-        {{ticket.userId}}
+        {{ticket.user.userName}} <img ng-show="ticket.offender" src="media/offender.png" style="width: 20px;" alt="Already missed one ticket call. Will not be requeued again."/>
     </td>
 </tr>
 </table>
 </div>
-<a ng-click="testSms();">Test Sms Service</a>
+<!-- <a ng-click="testSms();">Test Sms Service</a> -->

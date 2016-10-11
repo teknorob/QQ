@@ -3,5 +3,8 @@
     "httpProxyHost": "address",
     "httpProxyPort": "portNumber",
     "serviceAccountPassword": "makeUpAServicePasswordHere",
-    "debugMode": "false"
+    "debugMode": "false",
+    "fromAddress": "example@gmail.com",
+    "smtpHost":"smtp.gmail.com",
+    "smtpPort":"25"
 }

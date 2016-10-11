@@ -118,7 +118,6 @@ public class Main
         {
             throw new RuntimeException( e );
         }
-        
 
         QueueManager.init( connectionSource );
         RouteManager.insertWebsockets( connectionSource );

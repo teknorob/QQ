@@ -3,7 +3,6 @@ package com.qq.route.auth;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
-import java.io.InputStreamReader;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Arrays;
@@ -17,7 +16,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.gson.Gson;
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.config.QQConfig;
 import com.qq.core.route.RegistrableRoute;
@@ -37,13 +35,8 @@ public class AuthRoute extends RegistrableRoute
     {
         super( connectionSource );
 
-//        qqConfig = new Gson().fromJson(
-//            new InputStreamReader( AuthRoute.class
-//                .getResourceAsStream( "/com/qq/config/qq_config.json" ) ),
-//            QQConfig.class );
-
         NetHttpTransport transport;
-        if( !StringUtils.isEmpty( qqConfig.getHttpProxyHost() ) )
+        if ( !StringUtils.isEmpty( qqConfig.getHttpProxyHost() ) )
         {
             Proxy proxy = new Proxy( Proxy.Type.HTTP,
                 new InetSocketAddress( qqConfig.getHttpProxyHost(),
@@ -56,8 +49,7 @@ public class AuthRoute extends RegistrableRoute
         }
 
         verifier = new GoogleIdTokenVerifier.Builder( transport, new GsonFactory() )
-            .setAudience( Arrays.asList(
-                qqConfig.getGoogleClientId() ) )
+            .setAudience( Arrays.asList( qqConfig.getGoogleClientId() ) )
             .setIssuer( "accounts.google.com" ).build();
     }
 
@@ -72,6 +64,7 @@ public class AuthRoute extends RegistrableRoute
             {
                 Payload payload = idToken.getPayload();
                 String googleId = payload.getSubject();
+                String email = payload.getEmail();
                 UserFacade userFacade = new UserFacade( getConnectionSource() );
                 User user = userFacade.getUserByGoogleId( googleId );
 
@@ -79,7 +72,8 @@ public class AuthRoute extends RegistrableRoute
                 {
                     String userName = (String)payload.get( "name" );
                     String avatarURL = (String)payload.get( "picture" );
-                    user = userFacade.createNewUser( userName, googleId, avatarURL );
+                    user = userFacade.createNewUser( userName, googleId, avatarURL,
+                        email );
                     logger.info( "New User Created. Id: " + user.getUserId() );
                 }
                 request.session( true ).attribute( "user", user );
@@ -88,12 +82,12 @@ public class AuthRoute extends RegistrableRoute
             Map<String, Object> page = getNewPageModel( request );
             return page;
         }, getJsonTransformer() );
-        
+
         post( "/serviceLogin", ( request, response ) -> {
             String password = getJsonTransformer().stringToMap( request.body() )
-                    .get( "password" );
-            
-            if(qqConfig.getServiceAccountPassword().equals( password ))
+                .get( "password" );
+
+            if ( qqConfig.getServiceAccountPassword().equals( password ) )
             {
                 UserFacade userFacade = new UserFacade( getConnectionSource() );
                 User user = userFacade.getServiceUser();

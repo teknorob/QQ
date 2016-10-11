@@ -5,7 +5,6 @@ import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
 import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 
-import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.JsonTransformer;
 
 public abstract class RegistrableWebsocket

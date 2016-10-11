@@ -1,22 +1,12 @@
 package com.qq.route.service;
 
 import static spark.Spark.post;
-import static spark.Spark.webSocket;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.Observable;
-import java.util.Observer;
-
-import org.eclipse.jetty.websocket.api.Session;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketClose;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketConnect;
-import org.eclipse.jetty.websocket.api.annotations.OnWebSocketMessage;
 
 import com.j256.ormlite.support.ConnectionSource;
 import com.qq.core.route.RegistrableRoute;
-import com.qq.model.Ticket;
 import com.qq.queue.QueueManager;
 import com.qq.util.SessionUtils;
 
@@ -29,7 +19,7 @@ public class InteractionRoute extends RegistrableRoute
     {
         super( connectionSource );
         queueManager = QueueManager.getInstance( );
-//        queueManager.startAllQueues();
+        queueManager.startAllQueues();
     }
 
     @Override

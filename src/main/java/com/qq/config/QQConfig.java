@@ -16,6 +16,12 @@ public class QQConfig implements QQModel
     private String serviceAccountPassword;
     
     private boolean debugMode;
+    
+    private String fromAddress;
+    
+    private String smtpHost;
+    
+    private int smtpPort;
 
     private QQConfig()
     {
@@ -70,6 +76,36 @@ public class QQConfig implements QQModel
     public void setDebugMode( boolean debugMode )
     {
         this.debugMode = debugMode;
+    }
+
+    public String getFromAddress()
+    {
+        return fromAddress;
+    }
+
+    public void setFromAddress( String fromAddress )
+    {
+        this.fromAddress = fromAddress;
+    }
+
+    public String getSmtpHost()
+    {
+        return smtpHost;
+    }
+
+    public void setSmtpHost( String smtpHost )
+    {
+        this.smtpHost = smtpHost;
+    }
+
+    public int getSmtpPort()
+    {
+        return smtpPort;
+    }
+
+    public void setSmtpPort( int smtpPort )
+    {
+        this.smtpPort = smtpPort;
     }
 
     public static final QQConfig build()

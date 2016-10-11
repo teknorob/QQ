@@ -4,6 +4,7 @@ import javax.persistence.Column;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import com.qq.constants.UserConstants;
 
 @DatabaseTable(tableName = "user")
 public class User
@@ -32,6 +33,14 @@ public class User
     @Column
     @DatabaseField(columnName = "tx_phone_number")
     private String phoneNumber;
+
+    @Column
+    @DatabaseField(columnName = "tx_email")
+    private String email;
+
+    @Column
+    @DatabaseField(columnName = "cd_notification_type")
+    private String notificationType;
 
     public int getUserId()
     {
@@ -91,6 +100,26 @@ public class User
     public void setPhoneNumber( String phoneNumber )
     {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail( String email )
+    {
+        this.email = email;
+    }
+
+    public String getNotificationType()
+    {
+        return notificationType;
+    }
+
+    public void setNotificationType( String notificationType )
+    {
+        this.notificationType = notificationType;
     }
 
 }
